@@ -1,9 +1,13 @@
 Command Widgets Library
 
-Copyright (c) 2001 - 2002 Nikhil Dabas
-Contact: ndabas@hotmail.com
+Created by Nikhil Dabas ndabas@hotmail.com
 
 See demo.htm for a demonstration page for Command Widgets.
+
+
+Licence:
+
+Copyright (c) 2001 - 2002 Nikhil Dabas
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
