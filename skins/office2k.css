@@ -147,7 +147,7 @@
  display: inline-block;
  overflow: hidden;
 }
-.cwBarSeperatorH
+.cwBarSeparatorH
 {
  padding-top: 3px;
  padding-bottom: 3px;
@@ -165,7 +165,7 @@
  display: inline-block;
  overflow: hidden;
 }
-.cwBarSeperatorV
+.cwBarSeparatorV
 {
  border-top-width: 1px;
  border-top-style: solid;
@@ -182,7 +182,7 @@
  overflow: hidden;
 }
 
-.cwMenuSeperator
+.cwMenuSeparator
 {
  border-top-width: 1px;
  border-top-style: solid;
@@ -198,7 +198,7 @@
  overflow: hidden;
  display: inline-block;
 }
-.cwMenuSeperatorTable
+.cwMenuSeparatorTable
 {
  font-size: 1px;
  height: 8px;

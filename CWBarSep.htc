@@ -26,7 +26,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
 
 -->
-<public:component tagName="BarSeperator">
+<public:component tagName="BarSeparator">
     <public:defaults tabStop="false" contentEditable="false"
      canHaveHTML="true" viewInheritStyle="true"
      viewMasterTab="false" viewLinkContent="false" />
@@ -37,7 +37,7 @@
     <script language="JScript" src="CommandWidgets.js"></script>
     <script language="JScript">
     
-    var skinner = new SkinMan(element, "cwBarSeperator");
+    var skinner = new SkinMan(element, "cwBarSeparator");
 
     // Public Properties
 

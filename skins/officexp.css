@@ -88,7 +88,7 @@ side-effect - the menu scrolls *very* smoothly...
  display: inline-block;
  overflow: hidden;
 }
-.cwBarSeperatorH
+.cwBarSeparatorH
 {
  padding-top: 3px;
  padding-bottom: 3px;
@@ -100,7 +100,7 @@ side-effect - the menu scrolls *very* smoothly...
  display: inline-block;
  overflow: hidden;
 }
-.cwBarSeperatorV
+.cwBarSeparatorV
 {
  margin-top: 2px;
  margin-bottom: 2px;
@@ -111,7 +111,7 @@ side-effect - the menu scrolls *very* smoothly...
  overflow: hidden;
 }
 
-.cwMenuSeperator
+.cwMenuSeparator
 {
  margin-top: 0px;
  margin-bottom: 0px;
@@ -121,7 +121,7 @@ side-effect - the menu scrolls *very* smoothly...
  overflow: hidden;
  display: inline-block;
 }
-.cwMenuSeperatorTable
+.cwMenuSeparatorTable
 {
  font-size: 1px;
  height: 8px;
