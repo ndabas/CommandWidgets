@@ -252,7 +252,7 @@
         captionCell.noWrap = true;
         
         var paddingCell = element.document.createElement("td");
-        paddingCell.width = 3;
+        paddingCell.width = 4;
         paddingCell.className = "cwMenuItemCaptionBox";
         paddingCell.innerHTML = "&nbsp;";
         
