@@ -40,8 +40,8 @@
 <?import namespace="cw" implementation="CWMenuItem.htc" ?>
 <?import namespace="cw" implementation="CWMenuSep.htc" ?>
 
-<link rel=stylesheet href="skins/office2k.css" type=text/css id=cwPrimarySkin>
-<link rel=stylesheet href="" type=text/css id=cwSecondarySkin>
+<link rel="stylesheet" href="skins/office2k.css" type="text/css" id="cwPrimarySkin" />
+<link rel="stylesheet" href="" type="text/css" id="cwSecondarySkin" />
 <script id="clientEventHandlersJS" language="JScript">
 
 var beginLoad = new Date();
@@ -62,7 +62,7 @@ function skins_onchange()
     
     // Sort-of async... otherwise causes a small delay
     // between clicking a list item and selecting the item.
-    window.setTimeout("cwContainer.UpdateLayout();", 10);
+    window.setTimeout("cwContainer.updateLayout();", 10);
 }
 
 function cw_UIReady()
@@ -72,16 +72,16 @@ function cw_UIReady()
 
 function PerfTest()
 {
-    var times = 100;
+    var times = 10;
     var startTime = new Date();
     while(times--)
     {
-        cwContainer.UpdateLayout();
+        cwContainer.updateLayout();
         window.status = times;
     }
     var endTime = new Date();
     var str = "";
-    str += "\nPerformance test: 100 runs of UpdateLayout completed in ";
+    str += "\nPerformance test: 10 runs of updateLayout completed in ";
     str += ((endTime.getTime() - startTime.getTime())/1000).toString();
     str += " seconds.";
     messages.innerText += str;
@@ -121,6 +121,12 @@ function GetStatusString(value, max, symbol, fill)
     return str;
 }
 
+function addNew()
+{
+    var item = document.createElement("cw:MenuItem");
+    menuFile.menuItems.add(item);
+}
+
 </script>
 </head>
 <body scroll="no" style="font: menu;" LANGUAGE=javascript onload="return window_onload()">
@@ -144,7 +150,7 @@ Change skin:
 <cw:container id="cwContainer" onuiready="return cw_UIReady();"
  style="visibility: hidden; height: 200px; border: 1px solid black;">
 
-<cw:bar id="barMenu" style="position:absolute;">
+<cw:bar id="barMenu">
 <cw:bargripper/>
 <cw:button menu="menuFile">File</cw:button>
 <cw:button menu="menuEdit">Edit</cw:button>
@@ -152,7 +158,7 @@ Change skin:
 <cw:button menu="menuProject">Project</cw:button>
 </cw:bar>
 
-<cw:bar id="bar1" style="position:absolute;" dock="bottom">
+<cw:bar id="bar1" dock="bottom">
 <cw:bargripper/>
 <cw:button oncommand="barMenu.buttons.add(barMenu.buttons.remove(barMenu.buttons.item(0)));" image="images/AddNewItem.gif">Button 1</cw:button>
 <cw:button oncommand="status='Starting Performance Test...';setTimeout('PerfTest();',1000);" id="button2" image="images/copy.gif">Button 2</cw:button>
@@ -183,7 +189,7 @@ Change skin:
 </cw:menu>
 
 <cw:menu id="menuFile">
-<cw:menuitem checked="true">New</cw:menuitem>
+<cw:menuitem checked="true" oncommand="addNew();">New</cw:menuitem>
 <cw:menuitem checked="true" radio="true">Open</cw:menuitem>
 <cw:menuitem>Close</cw:menuitem>
 <cw:menuseperator />
@@ -203,7 +209,7 @@ Change skin:
 <cw:menuitem image="images/PageSetup.gif">Page Setup...</cw:menuitem>
 <cw:menuitem image="images/Print.gif">Print...</cw:menuitem>
 <cw:menuseperator />
-<cw:menuitem oncommand="menuEdit.menuitems.add(menuEdit.menuitems.remove(menuEdit.menuitems.item(0)));">Exit</cw:menuitem>
+<cw:menuitem oncommand="menuEdit.menuItems.add(menuEdit.menuItems.remove(menuEdit.menuItems.item(0)));">Exit</cw:menuitem>
 </cw:menu>
 
 <cw:menu id="menuEdit">

@@ -4,6 +4,7 @@
 .cwBarBase
 {
  overflow: hidden;
+ position: absolute;
  cursor: default;
  padding: 1px;
  margin-right: 2px;

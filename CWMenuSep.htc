@@ -35,7 +35,7 @@
     <public:attach event="ondocumentready" onevent="OnDocReady()" />
     <public:attach event="onclick" onevent="OnClick()" />
     <public:attach event="onselectstart" onevent="CancelEvent()" />
-    <public:method name="UpdateLayout">
+    <public:method name="updateLayout">
     <script language="JScript" src="CommandWidgets.js"></script>
     <script language="JScript">
     
@@ -44,7 +44,7 @@
 
     // Public Methods
     
-    function UpdateLayout()
+    function updateLayout()
     {
         //lineNode.style.width = clientWidth -
         //  parseFloat(lineNode.currentStyle.marginLeft) -

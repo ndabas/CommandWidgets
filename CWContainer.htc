@@ -34,7 +34,7 @@
     <public:attach event="ondocumentready" onevent="OnDocReady()" />
     <public:attach event="onselectstart" onevent="CancelEvent()" />
     <public:attach event="onclick" onevent="OnClick()" />
-    <public:method name="UpdateLayout">
+    <public:method name="updateLayout">
     <public:event name="onUIReady" id="evtReady">
     <script language="JScript" src="CommandWidgets.js"></script>
     <script language="JScript">
@@ -43,18 +43,18 @@
 
     // Public Methods
     
-    function UpdateLayout()
+    function updateLayout()
     {
         for(var i = 0; i < element.childNodes.length; i++)
         {
             if(element.childNodes[i].nodeType == 1)
             {
-                try { element.childNodes[i].UpdateLayout(); }
+                try { element.childNodes[i].updateLayout(); }
                 catch(e) {}
             }
         }
         
-        window._CWMan.dock.UpdateLayout();
+        window._CWMan.dock.updateLayout();
     }
     
 
@@ -74,7 +74,7 @@
     function OnDocReady()
     {
         skinner.ApplyClass("Default");
-        UpdateLayout();
+        updateLayout();
         evtReady.fire();
     }
     

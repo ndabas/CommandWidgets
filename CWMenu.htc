@@ -33,9 +33,9 @@
     <public:method name="ShowMenu" />
     <public:method name="HideMenu" />
     <public:method name="ScrollMenu" />
-    <public:method name="UpdateLayout">
+    <public:method name="updateLayout">
     <public:property name="level" get="get_level" />
-    <public:property name="menuitems" get="get_menuitems" />
+    <public:property name="menuItems" get="get_menuItems" />
     <public:event name="onpopup" ID="evtPopup" />
     <public:attach event="oncontentready" onevent="OnContentReady()" />
     <public:attach event="ondocumentready" onevent="OnDocReady()" />
@@ -47,7 +47,7 @@
     
     var level = -1;
     var activeNode = null;
-    var menuitems = null;
+    var menuItems = null;
     
     var GLYPH_SCROLL_UP = "5";
     var GLYPH_SCROLL_DOWN = "6";
@@ -150,7 +150,7 @@
             scrollDownNode.offsetHeight + parseFloat(element.currentStyle.paddingBottom);
         scrollUpNode.style.pixelTop = element.scrollTop;
         
-        window.setTimeout(element.uniqueID + ".UpdateLayout();", 10);
+        window.setTimeout(element.uniqueID + ".updateLayout();", 10);
     }
     
     // The HideMenu method will *only* be called by the
@@ -174,7 +174,7 @@
     }
     
     // *REAL* SLOOOW...
-    function UpdateLayout()
+    function updateLayout()
     {
         var w = 0;
         var c = 0;
@@ -193,7 +193,7 @@
                 c -= GetN(parseFloat(element.childNodes[i].currentStyle.paddingLeft), 0);
                 c -= GetN(parseFloat(element.childNodes[i].currentStyle.paddingRight), 0);
                 element.childNodes[i].style.pixelWidth = c;
-                try { element.childNodes[i].UpdateLayout(); }
+                try { element.childNodes[i].updateLayout(); }
                 catch(e) {}
             }
         }
@@ -207,9 +207,9 @@
     
     // Runtime Object Model
     
-    function get_menuitems()
+    function get_menuItems()
     {
-        return menuitems;
+        return menuItems;
     }
     
     function MenuItemCollection()
@@ -427,7 +427,7 @@
         style.visibility = "hidden";
         skinner.ApplyClass("Default");
         
-        menuitems = new MenuItemCollection();
+        menuItems = new MenuItemCollection();
     }
     
     // Menu scroll handlers

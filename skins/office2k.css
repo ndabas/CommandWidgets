@@ -5,6 +5,7 @@
 {
  overflow: hidden;
  cursor: default;
+ position: absolute;
  padding: 1px;
  background-color: buttonface;
  border-top: solid 1px buttonhighlight;

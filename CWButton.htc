@@ -42,9 +42,10 @@
     <public:attach event="onmouseover" onevent="OnMouseOver()" />
     <public:attach event="onmouseout" onevent="OnMouseOut()" />
     <public:attach event="onmousedown" onevent="OnMouseDown()" />
+    <public:attach event="onfocus" onevent="OnFocus()" />
+    <public:attach event="onblur" onevent="OnBlur()" />
     <public:attach event="onmouseup" onevent="OnMouseUp()" />
     <public:attach event="onclick" onevent="OnClick()" />
-    <public:attach event="ondblclick" onevent="OnDoubleClick()" />
     <public:attach event="onkeyup" onevent="OnKeyUp()" />
     <public:attach event="onselectstart" onevent="CancelEvent()" />
     <public:event name="oncommand" id="evtCommand" />
@@ -215,14 +216,23 @@
         ShowMenu();
     }
     
-    function OnDoubleClick()
-    {
-        evtCommand.fire();
-    }
-    
     function OnKeyUp()
     {
-        evtCommand.fire();
+        switch(event.keyCode)
+        {
+            case 13: // Enter
+            case 32: // Spacebar
+                OnClick();
+                break;
+            case 40: // Down
+                if(menu != null)
+                {
+                    window.document.getElementById(menu).focus();
+                }
+                break;
+            default:
+                break;
+        }
     }
     
     function OnMouseOver()
@@ -259,6 +269,16 @@
         skinner.ApplyClass("Hover");
     }
     
+    function OnFocus()
+    {
+        OnMouseOver();
+    }
+    
+    function OnBlur()
+    {
+        OnMouseOut();
+    }
+    
     // Private functions
     
     function ShowMenu()
@@ -278,6 +298,7 @@
         node = element;
         
         window.document.getElementById(menu).ShowMenu(x, y, 0, element);
+        window.document.getElementById(menu).focus();
         
         event.cancelBubble = true;
     }

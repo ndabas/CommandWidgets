@@ -108,7 +108,7 @@ function PopupMan_Add(elem, level)
     }
     
     // Check if the element is already in the all array.
-    for(i = 0; i < this.all.length; i++)
+    for(var i = 0; i < this.all.length; i++)
     {
         if(this.all[i] == elem && i == level)
         {
@@ -174,7 +174,7 @@ function DockMan()
     this.items.dockedRight = new Array();
     this.Dock = DockMan_Dock;
     this.Free = DockMan_Free;
-    this.UpdateLayout = DockMan_UpdateLayout;
+    this.updateLayout = DockMan_updateLayout;
 }
 
 function DockMan_Dock(elem)
@@ -257,7 +257,7 @@ function DockMan_Free(elem)
     
     // Remove the element from the correct array and fill
     // the void left.
-    void arr.splice(i, 1);
+    arr.splice(i, 1);
     /*
     while(arr.length > i)
     {
@@ -362,7 +362,7 @@ function DockMan_PositionAll(arr)
     }
 }
 
-function DockMan_UpdateLayout()
+function DockMan_updateLayout()
 {
     DockMan_PositionAll(this.items.dockedTop);
     DockMan_PositionAll(this.items.dockedLeft);

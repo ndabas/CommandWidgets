@@ -35,7 +35,7 @@
     <public:property name="orientation" get="get_orientation" put="put_orientation" />
     <public:property name="chevron" get="get_chevron" put="put_chevron" />
     <public:property name="buttons" get="get_buttons" />
-    <public:method name="UpdateLayout">
+    <public:method name="updateLayout">
     <public:attach event="oncontentready" onevent="OnContentReady()" />
     <public:attach event="ondocumentready" onevent="OnDocReady()" />
     <public:attach event="onmousedown" onevent="OnMouseDown()" />
@@ -105,7 +105,7 @@
         chevron = GetBoolValue(newValue);
     }
     
-    function UpdateLayout()
+    function updateLayout()
     {
         /*var h = 0;
         var c = 0;
@@ -124,7 +124,7 @@
                 c -= GetN(parseFloat(element.childNodes[i].currentStyle.paddingTop), 0);
                 c -= GetN(parseFloat(element.childNodes[i].currentStyle.paddingBottom), 0);
                 element.childNodes[i].style.pixelHeight = c;
-                try { element.childNodes[i].UpdateLayout(); }
+                try { element.childNodes[i].updateLayout(); }
                 catch(e) {}
             }
         }*/
