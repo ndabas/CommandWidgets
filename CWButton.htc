@@ -27,260 +27,260 @@
 
 -->
 <public:component tagName="Button">
-  <public:defaults tabStop="true" contentEditable="false"
-   canHaveHTML="true" viewInheritStyle="true"
-   viewMasterTab="false" viewLinkContent="false" />
-  <public:property name="menu" get="get_menu" put="put_menu" />
-  <public:property name="checked" get="get_checked" put="put_checked" />
-  <public:property name="enabled" get="get_enabled" put="put_enabled" />
-  <public:property name="image" get="get_image" put="put_image" />
-  <public:property name="prompt" get="get_prompt" put="put_prompt" />
-  <public:property name="_menuActive" get="get__menuActive" put="put__menuActive" />
-  <public:method name="click">
-  <public:attach event="oncontentready" onevent="OnContentReady()" />
-  <public:attach event="ondocumentready" onevent="OnDocReady()" />
-  <public:attach event="onmouseover" onevent="OnMouseOver()" />
-  <public:attach event="onmouseout" onevent="OnMouseOut()" />
-  <public:attach event="onmousedown" onevent="OnMouseDown()" />
-  <public:attach event="onmouseup" onevent="OnMouseUp()" />
-  <public:attach event="onclick" onevent="OnClick()" />
-  <public:attach event="ondblclick" onevent="OnDoubleClick()" />
-  <public:attach event="onkeyup" onevent="OnKeyUp()" />
-  <public:attach event="onselectstart" onevent="CancelEvent()" />
-  <public:event name="oncommand" id="evtCommand" />
-  <script language="JScript" src="CommandWidgets.js"></script>
-  <script language="JScript">
-  
-  var skinner = new SkinMan(element, "cwButton");
-  var icon = null;
-  
-  var IsDocReady = false;
-  
-  // Public Properties
-
-  var checked = false;
-  var enabled = true;
-  var menu = null;
-  var image;
-  var prompt;
-  var _menuActive = false;
-
-  function get_checked()
-  {
-  	return checked;
-  }
-
-  function put_checked(newValue)
-  {
-  	checked = GetBoolValue(newValue);
-  }
-
-  function get_enabled()
-  {
-  	return enabled;
-  }
-
-  function put_enabled(newValue)
-  {
-  	enabled = GetBoolValue(newValue);
-  	skinner.ApplyClass(enabled ? "Default" : "Disabled");
-  }
-
-  function get_image()
-  {
-  	return image;
-  }
-
-  function put_image(newValue)
-  {
-  	if(newValue == "")
-  	  newValue = null;
-  	
-  	image = newValue;
-  	if(image != null && icon != null)
-  	{
-  	  icon.src = image;
-  	  icon.style.display = "";
-  	}
-  	if(image == null && icon != null)
-  	{
-  	  icon.style.display = "none";
-  	}
-  }
-
-  function get_prompt()
-  {
-  	return prompt;
-  }
-
-  function put_prompt(newValue)
-  {
-  	prompt = newValue;
-  }
-  
-  function get_menu()
-  {
-  	return menu;
-  }
-
-  function put_menu(newValue)
-  {
-  	if(window.document.getElementById(newValue) != null)
-  	{
-  	  menu = newValue;
-  	  skinner = new SkinMan(element, "cwMenuButton");
-  	}
-  	else
-  	{
-  	  if(newValue == "" || newValue == null)
-  	  {
-  	    menu = null;
-  	    skinner = new SkinMan(element, "cwButton");
-  	  }
-  	  else
-  	  {
-  	    if(IsDocReady)
-  	    {
-  	      menu = null;
-  	      skinner = new SkinMan(element, "cwButton");
-  	      throw ERR_INVALID_VALUE;
-  	    }
-  	    else
-  	    {
-  	      menu = newValue;
-  	    }
-  	  }
-  	}
-  }
-  
-  function get__menuActive()
-  {
-    return _menuActive;
-  }
-  
-  function put__menuActive(newValue)
-  {
-    _menuActive = GetBoolValue(newValue);
-    skinner.ApplyClass(_menuActive ? "MenuActive" : "Default");
-  }
-
-  function click()
-  {
-  	OnClick();
-  }
-
-
-  // Event Handlers
-
-  function OnContentReady()
-  {
-    skinner.ApplyClass("Base");
+    <public:defaults tabStop="true" contentEditable="false"
+     canHaveHTML="true" viewInheritStyle="true"
+     viewMasterTab="false" viewLinkContent="false" />
+    <public:property name="menu" get="get_menu" put="put_menu" />
+    <public:property name="checked" get="get_checked" put="put_checked" />
+    <public:property name="enabled" get="get_enabled" put="put_enabled" />
+    <public:property name="image" get="get_image" put="put_image" />
+    <public:property name="prompt" get="get_prompt" put="put_prompt" />
+    <public:property name="_menuActive" get="get__menuActive" put="put__menuActive" />
+    <public:method name="click">
+    <public:attach event="oncontentready" onevent="OnContentReady()" />
+    <public:attach event="ondocumentready" onevent="OnDocReady()" />
+    <public:attach event="onmouseover" onevent="OnMouseOver()" />
+    <public:attach event="onmouseout" onevent="OnMouseOut()" />
+    <public:attach event="onmousedown" onevent="OnMouseDown()" />
+    <public:attach event="onmouseup" onevent="OnMouseUp()" />
+    <public:attach event="onclick" onevent="OnClick()" />
+    <public:attach event="ondblclick" onevent="OnDoubleClick()" />
+    <public:attach event="onkeyup" onevent="OnKeyUp()" />
+    <public:attach event="onselectstart" onevent="CancelEvent()" />
+    <public:event name="oncommand" id="evtCommand" />
+    <script language="JScript" src="CommandWidgets.js"></script>
+    <script language="JScript">
     
-    icon = document.createElement("img");
-    icon.style.display = "none";
-    icon.align = "absmiddle";
-    element.insertBefore(icon, element.childNodes[0]);
+    var skinner = new SkinMan(element, "cwButton");
+    var icon = null;
     
-    if(image != null)
-  	{
-  	  icon.src = image;
-  	  icon.style.display = "";
-  	}
+    var IsDocReady = false;
     
-    
-  }
+    // Public Properties
 
-  function OnPropertyChange()
-  {
+    var checked = false;
+    var enabled = true;
+    var menu = null;
+    var image;
+    var prompt;
+    var _menuActive = false;
 
-  }
-
-  function OnDocReady()
-  {
-    IsDocReady = true;
-    put_menu(menu);
-    
-    skinner.ApplyClass(enabled ? "Default" : "Disabled");
-  }
-  
-  function OnClick()
-  {
-    if(!enabled)
+    function get_checked()
     {
-      event.cancelBubble = true;
-      return;
+        return checked;
+    }
+
+    function put_checked(newValue)
+    {
+        checked = GetBoolValue(newValue);
+    }
+
+    function get_enabled()
+    {
+        return enabled;
+    }
+
+    function put_enabled(newValue)
+    {
+        enabled = GetBoolValue(newValue);
+        skinner.ApplyClass(enabled ? "Default" : "Disabled");
+    }
+
+    function get_image()
+    {
+        return image;
+    }
+
+    function put_image(newValue)
+    {
+        if(newValue == "")
+            newValue = null;
+        
+        image = newValue;
+        if(image != null && icon != null)
+        {
+            icon.src = image;
+            icon.style.display = "";
+        }
+        if(image == null && icon != null)
+        {
+            icon.style.display = "none";
+        }
+    }
+
+    function get_prompt()
+    {
+        return prompt;
+    }
+
+    function put_prompt(newValue)
+    {
+        prompt = newValue;
     }
     
-    evtCommand.fire();
-    ShowMenu();
-  }
-  
-  function OnDoubleClick()
-  {
-    evtCommand.fire();
-  }
-  
-  function OnKeyUp()
-  {
-    evtCommand.fire();
-  }
-  
-  function OnMouseOver()
-  {
-    if(!enabled || _menuActive)
-      return;
-    
-    skinner.ApplyClass("Hover");
-    if(window._CWMan.popups.GetMaxLevel() > -1)
-      ShowMenu();
-  }
-  
-  function OnMouseOut()
-  {
-    if(!enabled || _menuActive)
-      return;
-    
-    skinner.ApplyClass("Default");
-  }
-  
-  function OnMouseDown()
-  {
-    if(!enabled)
-      return;
-    
-    skinner.ApplyClass("Down");
-  }
-  
-  function OnMouseUp()
-  {
-    if(!enabled || _menuActive)
-      return;
-    
-    skinner.ApplyClass("Hover");
-  }
-  
-  // Private functions
-  
-  function ShowMenu()
-  {
-    if(menu == null)
-      return;
-    
-    var x = 0, y = 0;
-    var node = element;
-    while(node != null)
+    function get_menu()
     {
-      x += node.offsetLeft;
-      y += node.offsetTop;
-      node = node.offsetParent;
+        return menu;
     }
-    y += element.offsetHeight;
-    node = element;
-    
-    window.document.getElementById(menu).ShowMenu(x, y, 0, element);
-    
-    event.cancelBubble = true;
-  }
 
-  </script>
+    function put_menu(newValue)
+    {
+        if(window.document.getElementById(newValue) != null)
+        {
+            menu = newValue;
+            skinner = new SkinMan(element, "cwMenuButton");
+        }
+        else
+        {
+            if(newValue == "" || newValue == null)
+            {
+                menu = null;
+                skinner = new SkinMan(element, "cwButton");
+            }
+            else
+            {
+                if(IsDocReady)
+                {
+                    menu = null;
+                    skinner = new SkinMan(element, "cwButton");
+                    throw ERR_INVALID_VALUE;
+                }
+                else
+                {
+                    menu = newValue;
+                }
+            }
+        }
+    }
+    
+    function get__menuActive()
+    {
+        return _menuActive;
+    }
+    
+    function put__menuActive(newValue)
+    {
+        _menuActive = GetBoolValue(newValue);
+        skinner.ApplyClass(_menuActive ? "MenuActive" : "Default");
+    }
+
+    function click()
+    {
+        OnClick();
+    }
+
+
+    // Event Handlers
+
+    function OnContentReady()
+    {
+        skinner.ApplyClass("Base");
+        
+        icon = document.createElement("img");
+        icon.style.display = "none";
+        icon.align = "absmiddle";
+        element.insertBefore(icon, element.childNodes[0]);
+        
+        if(image != null)
+        {
+            icon.src = image;
+            icon.style.display = "";
+        }
+        
+        
+    }
+
+    function OnPropertyChange()
+    {
+
+    }
+
+    function OnDocReady()
+    {
+        IsDocReady = true;
+        put_menu(menu);
+        
+        skinner.ApplyClass(enabled ? "Default" : "Disabled");
+    }
+    
+    function OnClick()
+    {
+        if(!enabled)
+        {
+            event.cancelBubble = true;
+            return;
+        }
+        
+        evtCommand.fire();
+        ShowMenu();
+    }
+    
+    function OnDoubleClick()
+    {
+        evtCommand.fire();
+    }
+    
+    function OnKeyUp()
+    {
+        evtCommand.fire();
+    }
+    
+    function OnMouseOver()
+    {
+        if(!enabled || _menuActive)
+            return;
+        
+        skinner.ApplyClass("Hover");
+        if(window._CWMan.popups.GetMaxLevel() > -1)
+            ShowMenu();
+    }
+    
+    function OnMouseOut()
+    {
+        if(!enabled || _menuActive)
+            return;
+        
+        skinner.ApplyClass("Default");
+    }
+    
+    function OnMouseDown()
+    {
+        if(!enabled)
+            return;
+        
+        skinner.ApplyClass("Down");
+    }
+    
+    function OnMouseUp()
+    {
+        if(!enabled || _menuActive)
+            return;
+        
+        skinner.ApplyClass("Hover");
+    }
+    
+    // Private functions
+    
+    function ShowMenu()
+    {
+        if(menu == null)
+            return;
+        
+        var x = 0, y = 0;
+        var node = element;
+        while(node != null)
+        {
+            x += node.offsetLeft;
+            y += node.offsetTop;
+            node = node.offsetParent;
+        }
+        y += element.offsetHeight;
+        node = element;
+        
+        window.document.getElementById(menu).ShowMenu(x, y, 0, element);
+        
+        event.cancelBubble = true;
+    }
+
+    </script>
 </public:component>

@@ -48,54 +48,77 @@ var beginLoad = new Date();
 
 function skins_onchange()
 {
-  var skinURL = skins.value.split("|");
-  if(skinURL.length == 0)
-  {
-    cwPrimarySkin.href = skinURL[0];
-    cwSecondarySkin.href = "";
-  }
-  else
-  {
-    cwPrimarySkin.href = skinURL[0];
-    cwSecondarySkin.href = skinURL[1];
-  }
-  
-  // Sort-of async... otherwise causes a small delay
-  // between clicking a list item and selecting the item.
-  window.setTimeout("cwContainer.UpdateLayout();", 10);
+    var skinURL = skins.value.split("|");
+    if(skinURL.length == 0)
+    {
+        cwPrimarySkin.href = skinURL[0];
+        cwSecondarySkin.href = "";
+    }
+    else
+    {
+        cwPrimarySkin.href = skinURL[0];
+        cwSecondarySkin.href = skinURL[1];
+    }
+    
+    // Sort-of async... otherwise causes a small delay
+    // between clicking a list item and selecting the item.
+    window.setTimeout("cwContainer.UpdateLayout();", 10);
 }
 
 function cw_UIReady()
 {
-  cwContainer.style.visibility = "visible";
+    cwContainer.style.visibility = "visible";
 }
 
 function PerfTest()
 {
-  var times = 100;
-  var startTime = new Date();
-  while(times--)
-  {
-    cwContainer.UpdateLayout();
-    window.status = times;
-  }
-  var endTime = new Date();
-  var str = "";
-  str += "\nPerformance test: 100 runs of UpdateLayout completed in ";
-  str += ((endTime.getTime() - startTime.getTime())/1000).toString();
-  str += " seconds.";
-  messages.innerText += str;
+    var times = 100;
+    var startTime = new Date();
+    while(times--)
+    {
+        cwContainer.UpdateLayout();
+        window.status = times;
+    }
+    var endTime = new Date();
+    var str = "";
+    str += "\nPerformance test: 100 runs of UpdateLayout completed in ";
+    str += ((endTime.getTime() - startTime.getTime())/1000).toString();
+    str += " seconds.";
+    messages.innerText += str;
 }
 
 function window_onload()
 {
-  skins_onchange();
-  var doneLoad = new Date();
-  var str = "";
-  str += "\nPerformance test: document completed in ";
-  str += ((doneLoad.getTime() - beginLoad.getTime())/1000).toString();
-  str += " seconds.";
-  messages.innerText += str;
+    skins_onchange();
+    var doneLoad = new Date();
+    var str = "";
+    var time = (doneLoad.getTime() - beginLoad.getTime())/1000;
+    str += "\nPerformance test: document completed in ";
+    str += time.toString();
+    str += " seconds.";
+    messages.innerText += str;
+    window.status = GetStatusString(time, 10, "#", "=");
+}
+
+function GetStatusString(value, max, symbol, fill)
+{
+    var str = "";
+    var percent = Math.round((value/max)*100);
+    max = Math.floor(max);
+    value = Math.ceil(value);
+    max -= value;
+    while(value--)
+    {
+        str += symbol;
+    }
+    str += " ";
+    str += percent;
+    str += "% ";
+    while(max--)
+    {
+        str += fill;
+    }
+    return str;
 }
 
 </script>
@@ -112,6 +135,7 @@ Change skin:
 <OPTION value="skins/officexp.css|skins/xpblue.css">Office XP - Windows XP Blue</OPTION>
 <OPTION value="skins/officexp.css|skins/xpolivegreen.css">Office XP - Windows XP Olive Green</OPTION>
 <OPTION value="skins/officexp.css|skins/xpsilver.css">Office XP - Windows XP Silver</OPTION>
+<OPTION value="skins/officexp.css|skins/xpcp.css">Office XP - The Code Project</OPTION>
 </SELECT>
 
 </p>

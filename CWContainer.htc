@@ -27,62 +27,62 @@
 
 -->
 <public:component tagName="Container">
-  <public:defaults tabStop="false" contentEditable="false"
-   canHaveHTML="true" viewInheritStyle="true"
-   viewMasterTab="false" viewLinkContent="false" />
-  <public:attach event="oncontentready" onevent="OnContentReady()" />
-  <public:attach event="ondocumentready" onevent="OnDocReady()" />
-  <public:attach event="onselectstart" onevent="CancelEvent()" />
-  <public:attach event="onclick" onevent="OnClick()" />
-  <public:method name="UpdateLayout">
-  <public:event name="onUIReady" id="evtReady">
-  <script language="JScript" src="CommandWidgets.js"></script>
-  <script language="JScript">
-  
-  var skinner = new SkinMan(element, "cwContainer");
+    <public:defaults tabStop="false" contentEditable="false"
+     canHaveHTML="true" viewInheritStyle="true"
+     viewMasterTab="false" viewLinkContent="false" />
+    <public:attach event="oncontentready" onevent="OnContentReady()" />
+    <public:attach event="ondocumentready" onevent="OnDocReady()" />
+    <public:attach event="onselectstart" onevent="CancelEvent()" />
+    <public:attach event="onclick" onevent="OnClick()" />
+    <public:method name="UpdateLayout">
+    <public:event name="onUIReady" id="evtReady">
+    <script language="JScript" src="CommandWidgets.js"></script>
+    <script language="JScript">
+    
+    var skinner = new SkinMan(element, "cwContainer");
 
-  // Public Methods
-  
-  function UpdateLayout()
-  {
-    for(var i = 0; i < element.childNodes.length; i++)
+    // Public Methods
+    
+    function UpdateLayout()
     {
-      if(element.childNodes[i].nodeType == 1)
-      {
-        try { element.childNodes[i].UpdateLayout(); }
-        catch(e) {}
-      }
+        for(var i = 0; i < element.childNodes.length; i++)
+        {
+            if(element.childNodes[i].nodeType == 1)
+            {
+                try { element.childNodes[i].UpdateLayout(); }
+                catch(e) {}
+            }
+        }
+        
+        window._CWMan.dock.UpdateLayout();
     }
     
-    window._CWMan.dock.UpdateLayout();
-  }
-  
 
-  // Event Handlers
+    // Event Handlers
 
-  function OnContentReady()
-  {
-    CWInit(element);
-    skinner.ApplyClass("Base");
-  }
+    function OnContentReady()
+    {
+        CWInit(element);
+        skinner.ApplyClass("Base");
+    }
 
-  function OnPropertyChange()
-  {
+    function OnPropertyChange()
+    {
+        
+    }
+
+    function OnDocReady()
+    {
+        skinner.ApplyClass("Default");
+        UpdateLayout();
+        evtReady.fire();
+    }
     
-  }
+    function OnClick()
+    {
+        // Hide any visible menus
+        window._CWMan.popups.SetMaxLevel(-1);
+    }
 
-  function OnDocReady()
-  {
-    skinner.ApplyClass("Default");
-    UpdateLayout();
-    evtReady.fire();
-  }
-  
-  function OnClick()
-  {
-    // Hide any visible menus
-    window._CWMan.popups.SetMaxLevel(-1);
-  }
-
-  </script>
+    </script>
 </public:component>  

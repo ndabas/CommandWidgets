@@ -27,45 +27,45 @@
 
 -->
 <public:component tagName="BarSeperator">
-  <public:defaults tabStop="false" contentEditable="false"
-   canHaveHTML="true" viewInheritStyle="true"
-   viewMasterTab="false" viewLinkContent="false" />
-  <public:property name="orientation" get="get_orientation" put="put_orientation" />
-  <public:attach event="oncontentready" onevent="OnContentReady()" />
-  <public:attach event="ondocumentready" onevent="OnDocReady()" />
-  <public:attach event="onselectstart" onevent="CancelEvent()" />
-  <script language="JScript" src="CommandWidgets.js"></script>
-  <script language="JScript">
-  
-  var skinner = new SkinMan(element, "cwBarSeperator");
+    <public:defaults tabStop="false" contentEditable="false"
+     canHaveHTML="true" viewInheritStyle="true"
+     viewMasterTab="false" viewLinkContent="false" />
+    <public:property name="orientation" get="get_orientation" put="put_orientation" />
+    <public:attach event="oncontentready" onevent="OnContentReady()" />
+    <public:attach event="ondocumentready" onevent="OnDocReady()" />
+    <public:attach event="onselectstart" onevent="CancelEvent()" />
+    <script language="JScript" src="CommandWidgets.js"></script>
+    <script language="JScript">
+    
+    var skinner = new SkinMan(element, "cwBarSeperator");
 
-  // Public Properties
+    // Public Properties
 
  
 
-  // Event Handlers
+    // Event Handlers
 
-  function OnContentReady()
-  {
-
-  }
-
-  function OnPropertyChange()
-  {
-    switch(event.propertyName)
+    function OnContentReady()
     {
-      case "style.writingMode":
-        skinner.ApplyClass(element.style.writingMode == "tb-rl" ? "V" : "H");
-        break;
-      default:
-        break;
+
     }
-  }
 
-  function OnDocReady()
-  {
-    skinner.ApplyClass(element.style.writingMode == "vertical" ? "V" : "H");
-  }
+    function OnPropertyChange()
+    {
+        switch(event.propertyName)
+        {
+            case "style.writingMode":
+                skinner.ApplyClass(element.style.writingMode == "tb-rl" ? "V" : "H");
+                break;
+            default:
+                break;
+        }
+    }
 
-  </script>
+    function OnDocReady()
+    {
+        skinner.ApplyClass(element.style.writingMode == "vertical" ? "V" : "H");
+    }
+
+    </script>
 </public:component>

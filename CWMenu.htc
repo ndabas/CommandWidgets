@@ -27,460 +27,460 @@
 
 -->
 <public:component tagName="Menu">
-  <public:defaults tabStop="false" contentEditable="false"
-   canHaveHTML="true" viewInheritStyle="true"
-   viewMasterTab="false" viewLinkContent="false" />
-  <public:method name="ShowMenu" />
-  <public:method name="HideMenu" />
-  <public:method name="ScrollMenu" />
-  <public:method name="UpdateLayout">
-  <public:property name="level" get="get_level" />
-  <public:property name="menuitems" get="get_menuitems" />
-  <public:event name="onpopup" ID="evtPopup" />
-  <public:attach event="oncontentready" onevent="OnContentReady()" />
-  <public:attach event="ondocumentready" onevent="OnDocReady()" />
-  <public:attach event="onselectstart" onevent="CancelEvent()" />
-  <script language="JScript" src="CommandWidgets.js"></script>
-  <script language="JScript">
-  
-  var skinner = new SkinMan(element, "cwMenu");
-  
-  var level = -1;
-  var activeNode = null;
-  var menuitems = null;
-  
-  var GLYPH_SCROLL_UP = "5";
-  var GLYPH_SCROLL_DOWN = "6";
-  
-  var MENU_OFFSET_Y = 10;
-  var MENU_OFFSET_X = 10;
-  
-  var SCROLL_SPEED = 120; // In pixels per second
-  var scrollUpNode = null;
-  var scrollDownNode = null;
-  var scrollPaddingNode1 = null;
-  var scrollPaddingNode2 = null;
-  var scrollTimer = null;
-  var scrollDirection = 0;
-  
-  function get_level()
-  {
-    return level;
-  }
-  
-  function ShowMenu(x, y, atLevel, callingElement)
-  {
-    evtPopup.fire();
+    <public:defaults tabStop="false" contentEditable="false"
+     canHaveHTML="true" viewInheritStyle="true"
+     viewMasterTab="false" viewLinkContent="false" />
+    <public:method name="ShowMenu" />
+    <public:method name="HideMenu" />
+    <public:method name="ScrollMenu" />
+    <public:method name="UpdateLayout">
+    <public:property name="level" get="get_level" />
+    <public:property name="menuitems" get="get_menuitems" />
+    <public:event name="onpopup" ID="evtPopup" />
+    <public:attach event="oncontentready" onevent="OnContentReady()" />
+    <public:attach event="ondocumentready" onevent="OnDocReady()" />
+    <public:attach event="onselectstart" onevent="CancelEvent()" />
+    <script language="JScript" src="CommandWidgets.js"></script>
+    <script language="JScript">
     
-    element.style.pixelTop = y;
-    element.style.pixelLeft = x;
-    element.style.visibility = "visible";
+    var skinner = new SkinMan(element, "cwMenu");
     
+    var level = -1;
+    var activeNode = null;
+    var menuitems = null;
     
-    window._CWMan.popups.Add(element, atLevel);
+    var GLYPH_SCROLL_UP = "5";
+    var GLYPH_SCROLL_DOWN = "6";
     
-    level = atLevel;
+    var MENU_OFFSET_Y = 10;
+    var MENU_OFFSET_X = 10;
     
-    activeNode = callingElement;
-    try { activeNode._menuActive = true; }
-    catch(e) { }
+    var SCROLL_SPEED = 120; // In pixels per second
+    var scrollUpNode = null;
+    var scrollDownNode = null;
+    var scrollPaddingNode1 = null;
+    var scrollPaddingNode2 = null;
+    var scrollTimer = null;
+    var scrollDirection = 0;
     
-    var canvas = window.document.getElementsByTagName("html")[0];
-    
-    // Correct height
-    if(element.offsetHeight + 2 * MENU_OFFSET_Y >
-       canvas.offsetHeight || (level == 0 &&
-       element.offsetHeight + 2 * MENU_OFFSET_Y +
-       element.style.pixelTop > canvas.offsetHeight))
+    function get_level()
     {
-      element.style.pixelHeight = canvas.offsetHeight -
-        2 * MENU_OFFSET_Y;
-      if(level == 0)
-        element.style.pixelHeight = element.style.pixelHeight -
-          element.style.pixelTop + MENU_OFFSET_Y;
-      
-      scrollUpNode.style.display = "";
-      scrollDownNode.style.display = "";
-      scrollPaddingNode1.style.display = "";
-      scrollPaddingNode2.style.display = "";
-      scrollUpNode.style.zIndex = element.style.zIndex + 1;
-      scrollDownNode.style.zIndex = element.style.zIndex + 1;
-    }
-    else // If no correctins are made, hide the scrollers
-    {
-      scrollUpNode.style.display = "none";
-      scrollDownNode.style.display = "none";
-      scrollPaddingNode1.style.display = "none";
-      scrollPaddingNode2.style.display = "none";
+        return level;
     }
     
-    // Correct y-position
-    if(element.style.pixelTop + element.offsetHeight + MENU_OFFSET_Y >
-       canvas.scrollTop +
-       canvas.offsetHeight && level != 0)
+    function ShowMenu(x, y, atLevel, callingElement)
     {
-      element.style.pixelTop = canvas.scrollTop -
-        MENU_OFFSET_Y + canvas.offsetHeight
-        - element.offsetHeight;
-    }
-    // Correct x-position
-    if(element.style.pixelLeft + element.offsetWidth + MENU_OFFSET_X >
-       canvas.scrollLeft +
-       canvas.offsetWidth)
-    {
-      if(level != 0)
-      {
-        element.style.pixelLeft = element.style.pixelLeft -
-          activeNode.offsetWidth - element.offsetWidth;
-      }
-      if(element.style.pixelLeft < MENU_OFFSET_X || level == 0)
-      {
-        element.style.pixelLeft = canvas.scrollLeft -
-          MENU_OFFSET_X + canvas.offsetWidth -
-          element.offsetWidth;
-      }
-    }
-    
-    var visibleHeight = 0;
-    visibleHeight -= parseFloat(element.currentStyle.paddingTop);
-    visibleHeight += element.clientHeight;
-    visibleHeight -= parseFloat(element.currentStyle.paddingBottom);
-    
-    scrollDownNode.style.pixelTop = visibleHeight + element.scrollTop -
-      scrollDownNode.offsetHeight + parseFloat(element.currentStyle.paddingBottom);
-    scrollUpNode.style.pixelTop = element.scrollTop;
-    
-    window.setTimeout(element.uniqueID + ".UpdateLayout();", 10);
-  }
-  
-  // The HideMenu method will *only* be called by the
-  // Popup Manager - so do not remove the menu from
-  // the popups collection from within this function.
-  function HideMenu()
-  {
-    element.style.visibility = "hidden";
-    element.style.height = "auto";
-    element.scrollTop = 0;
-    level = -1;
-    
-    try { activeNode._menuActive = false; }
-    catch(e) { }
-    activeNode = null;
-    
-    scrollUpNode.style.display = "none";
-    scrollDownNode.style.display = "none";
-    scrollPaddingNode1.style.display = "none";
-    scrollPaddingNode2.style.display = "none";
-  }
-  
-  // *REAL* SLOOOW...
-  function UpdateLayout()
-  {
-    var w = 0;
-    var c = 0;
-    w -= GetN(parseFloat(element.currentStyle.paddingLeft), 0);
-    w += element.clientWidth;
-    w -= GetN(parseFloat(element.currentStyle.paddingRight), 0);
-    for(var i = 0; i < element.childNodes.length; i++)
-    {
-      if(element.childNodes[i].nodeType == 1)
-      {
-        c = w;
-        c -= GetN(parseFloat(element.childNodes[i].currentStyle.marginLeft), 0);
-        c -= GetN(parseFloat(element.childNodes[i].currentStyle.marginRight), 0);
-        c -= GetN(parseFloat(element.childNodes[i].currentStyle.borderLeftWidth), 0);
-        c -= GetN(parseFloat(element.childNodes[i].currentStyle.borderRightWidth), 0);
-        c -= GetN(parseFloat(element.childNodes[i].currentStyle.paddingLeft), 0);
-        c -= GetN(parseFloat(element.childNodes[i].currentStyle.paddingRight), 0);
-        element.childNodes[i].style.pixelWidth = c;
-        try { element.childNodes[i].UpdateLayout(); }
-        catch(e) {}
-      }
-    }
-  }
-  
-  // Returns def if value is a valid number, i.e. not NaN
-  function GetN(value, def)
-  {
-    return (isNaN(value) ? def : value);
-  }
-  
-  // Runtime Object Model
-  
-  function get_menuitems()
-  {
-    return menuitems;
-  }
-  
-  function MenuItemCollection()
-  {
-    this.add = MenuItems_Add;
-    this.clear = MenuItems_Clear;
-    this.contains = MenuItems_Contains;
-    this.getLength = MenuItems_GetCount;
-    this.insert = MenuItems_Insert;
-    this.item = MenuItems_Item;
-    this.remove = MenuItems_Remove;
-  }
-  
-  function MenuItems_Add(item)
-  {
-    if(item.nodeType != 1 ||
-      (item.nodeName.toLowerCase() != "menuseperator" &&
-       item.nodeName.toLowerCase() != "menuitem"))
-    {
-      throw ERR_INVALID_ARGUMENT;
-      return false;
-    }
-    
-    element.insertBefore(item, scrollUpNode);
-    
-    return true;
-  }
-  
-  function MenuItems_Clear()
-  {
-    for(var i = element.childNodes.length; i > 0; i--)
-    {
-      if(element.childNodes[i - 1].nodeType == 1 &&
-        (element.childNodes[i - 1].nodeName.toLowerCase() == "menuseperator")
-         || (element.childNodes[i - 1].nodeName.toLowerCase() == "menuitem"))
-      {
-        element.childNodes[i - 1].removeNode(true);
-      }
-    }
-    return true;
-  }
-  
-  function MenuItems_Contains(item)
-  {
-    var index = 0;
-    for(var i = 0; i < element.childNodes.length; i++)
-    {
-      if(element.childNodes[i].nodeType == 1 &&
-        (element.childNodes[i].nodeName.toLowerCase() == "menuseperator")
-         || (element.childNodes[i].nodeName.toLowerCase() == "menuitem"))
-      {
-        if(item == element.childNodes[i])
-        {
-          return index;
-        }
-        index++;
-      }
-    }
-    
-    return -1;
-  }
-  
-  function MenuItems_GetCount()
-  {
-    var count = 0;
-    for(var i = element.childNodes.length; i > 0; i--)
-    {
-      if(element.childNodes[i - 1].nodeType == 1 &&
-        (element.childNodes[i - 1].nodeName.toLowerCase() == "menuseperator")
-         || (element.childNodes[i - 1].nodeName.toLowerCase() == "menuitem"))
-      {
-        count++;
-      }
-    }
-    
-    return count;
-  }
-  
-  function MenuItems_Insert(item, index)
-  {
-    if(item.nodeType != 1 || isNaN(index) ||
-      (item.nodeName.toLowerCase() != "menuseperator" &&
-       item.nodeName.toLowerCase() != "menuitem"))
-    {
-      throw ERR_INVALID_ARGUMENT;
-      return false;
-    }
-    
-    var count = 0;
-    for(var i = element.childNodes.length; i > 0; i--)
-    {
-      if(element.childNodes[i - 1].nodeType == 1 &&
-        (element.childNodes[i - 1].nodeName.toLowerCase() == "menuseperator")
-         || (element.childNodes[i - 1].nodeName.toLowerCase() == "menuitem"))
-      {
-        if(count == index)
-        {
-          return element.insertBefore(item, element.childNodes[i - 1]);
-        }
-        count++;
-      }
-    }
-    
-    return null;
-  }
-  
-  function MenuItems_Item(index)
-  {
-    if(isNaN(index))
-    {
-      throw ERR_INVALID_ARGUMENT;
-      return false;
-    }
-    
-    var count = 0;
-    for(var i = 0; i < element.childNodes.length; i++)
-    {
-      if(element.childNodes[i].nodeType == 1 &&
-        (element.childNodes[i].nodeName.toLowerCase() == "menuseperator")
-         || (element.childNodes[i].nodeName.toLowerCase() == "menuitem"))
-      {
-        if(count == index)
-        {
-          return element.childNodes[i];
-        }
-        count++;
-      }
-    }
-    
-    return null;
-  }
-  
-  function MenuItems_Remove(item)
-  {
-    var index = 0;
-    for(var i = element.childNodes.length; i > 0; i--)
-    {
-      if(element.childNodes[i - 1].nodeType == 1 &&
-        (element.childNodes[i - 1].nodeName.toLowerCase() == "menuseperator")
-         || (element.childNodes[i - 1].nodeName.toLowerCase() == "menuitem"))
-      {
-        if(item == element.childNodes[i - 1])
-        {
-          return element.childNodes[i - 1].removeNode(true);
-        }
-        index++;
-      }
-    }
-    
-    return null;
-  }
-  
-  
-  
-  // Event Handlers
-  
-  function OnContentReady()
-  {
-    skinner.ApplyClass("Base");
-    
-    var table = document.createElement("table");
-    var tbody = document.createElement("tbody");
-    var trow = document.createElement("tr");
-    var cell = document.createElement("td");
-    
-    cell.vAlign = "middle";
-    cell.style.textAlign = "center";
-    
-    table.style.display = "none";
-    table.style.position = "absolute";
-    table.style.posLeft = 0;
-    table.style.posTop = 0;
-    table.className = "cwMenuScroller";
-    table.cellPadding = 0;
-    table.cellSpacing = 0;
-    
-    trow.appendChild(cell);
-    tbody.appendChild(trow);
-    table.appendChild(tbody);
+        evtPopup.fire();
         
-    scrollUpNode = table;
-    scrollDownNode = table.cloneNode(true);
-    
-    var padTable = table.cloneNode(true);
-    padTable.rows[0].cells[0].appendChild(
-      document.createTextNode("blah") );
-    padTable.style.position = "static";
-    padTable.style.visibility = "hidden";
-    
-    scrollUpNode.rows[0].cells[0].appendChild(
-      document.createTextNode(GLYPH_SCROLL_UP) );
-    scrollDownNode.rows[0].cells[0].appendChild(
-      document.createTextNode(GLYPH_SCROLL_DOWN) );
-    
-    scrollPaddingNode1 = element.insertBefore(padTable, element.childNodes[0]);    
-    element.appendChild(scrollUpNode);
-    element.appendChild(scrollDownNode);
-    scrollPaddingNode2 = element.appendChild(padTable.cloneNode(true));
-    
-    scrollUpNode.attachEvent("onmouseover", OnScrollUp);
-    scrollDownNode.attachEvent("onmouseover", OnScrollDown);
-    scrollUpNode.attachEvent("onmouseout", StopScrolling);
-    scrollDownNode.attachEvent("onmouseout", StopScrolling);
-    scrollUpNode.attachEvent("onclick", CancelEvent);
-    scrollDownNode.attachEvent("onclick", CancelEvent);
-  }
-
-  function OnPropertyChange()
-  {
-
-  }
-
-  function OnDocReady()
-  {
-    style.visibility = "hidden";
-    skinner.ApplyClass("Default");
-    
-    menuitems = new MenuItemCollection();
-  }
-  
-  // Menu scroll handlers
-  
-  function OnScrollUp()
-  {
-    scrollDirection = -1;
-    scrollTimer = window.setInterval(element.uniqueID + ".ScrollMenu()",
-      1000 / SCROLL_SPEED);
-  }
-  
-  function OnScrollDown()
-  {
-    scrollDirection = 1;
-    scrollTimer = window.setInterval(element.uniqueID + ".ScrollMenu()",
-      1000 / SCROLL_SPEED);
-  }
-  
-  function ScrollMenu()
-  {
-    var scrollPosition = element.scrollTop + scrollDirection;
-    var visibleHeight = 0;
-    visibleHeight -= parseFloat(element.currentStyle.paddingTop);
-    visibleHeight += element.clientHeight;
-    visibleHeight -= parseFloat(element.currentStyle.paddingBottom);
-    
-    if((element.scrollHeight - visibleHeight) < scrollPosition)
-    {
-      StopScrolling();
-      return;
+        element.style.pixelTop = y;
+        element.style.pixelLeft = x;
+        element.style.visibility = "visible";
+        
+        
+        window._CWMan.popups.Add(element, atLevel);
+        
+        level = atLevel;
+        
+        activeNode = callingElement;
+        try { activeNode._menuActive = true; }
+        catch(e) { }
+        
+        var canvas = window.document.getElementsByTagName("html")[0];
+        
+        // Correct height
+        if(element.offsetHeight + 2 * MENU_OFFSET_Y >
+             canvas.offsetHeight || (level == 0 &&
+             element.offsetHeight + 2 * MENU_OFFSET_Y +
+             element.style.pixelTop > canvas.offsetHeight))
+        {
+            element.style.pixelHeight = canvas.offsetHeight -
+                2 * MENU_OFFSET_Y;
+            if(level == 0)
+                element.style.pixelHeight = element.style.pixelHeight -
+                    element.style.pixelTop + MENU_OFFSET_Y;
+            
+            scrollUpNode.style.display = "";
+            scrollDownNode.style.display = "";
+            scrollPaddingNode1.style.display = "";
+            scrollPaddingNode2.style.display = "";
+            scrollUpNode.style.zIndex = element.style.zIndex + 1;
+            scrollDownNode.style.zIndex = element.style.zIndex + 1;
+        }
+        else // If no correctins are made, hide the scrollers
+        {
+            scrollUpNode.style.display = "none";
+            scrollDownNode.style.display = "none";
+            scrollPaddingNode1.style.display = "none";
+            scrollPaddingNode2.style.display = "none";
+        }
+        
+        // Correct y-position
+        if(element.style.pixelTop + element.offsetHeight + MENU_OFFSET_Y >
+             canvas.scrollTop +
+             canvas.offsetHeight && level != 0)
+        {
+            element.style.pixelTop = canvas.scrollTop -
+                MENU_OFFSET_Y + canvas.offsetHeight
+                - element.offsetHeight;
+        }
+        // Correct x-position
+        if(element.style.pixelLeft + element.offsetWidth + MENU_OFFSET_X >
+             canvas.scrollLeft +
+             canvas.offsetWidth)
+        {
+            if(level != 0)
+            {
+                element.style.pixelLeft = element.style.pixelLeft -
+                    activeNode.offsetWidth - element.offsetWidth;
+            }
+            if(element.style.pixelLeft < MENU_OFFSET_X || level == 0)
+            {
+                element.style.pixelLeft = canvas.scrollLeft -
+                    MENU_OFFSET_X + canvas.offsetWidth -
+                    element.offsetWidth;
+            }
+        }
+        
+        var visibleHeight = 0;
+        visibleHeight -= parseFloat(element.currentStyle.paddingTop);
+        visibleHeight += element.clientHeight;
+        visibleHeight -= parseFloat(element.currentStyle.paddingBottom);
+        
+        scrollDownNode.style.pixelTop = visibleHeight + element.scrollTop -
+            scrollDownNode.offsetHeight + parseFloat(element.currentStyle.paddingBottom);
+        scrollUpNode.style.pixelTop = element.scrollTop;
+        
+        window.setTimeout(element.uniqueID + ".UpdateLayout();", 10);
     }
     
-    element.scrollTop = scrollPosition;
-    
-    if(element.scrollTop != scrollPosition)
+    // The HideMenu method will *only* be called by the
+    // Popup Manager - so do not remove the menu from
+    // the popups collection from within this function.
+    function HideMenu()
     {
-      StopScrolling();
-      return;
+        element.style.visibility = "hidden";
+        element.style.height = "auto";
+        element.scrollTop = 0;
+        level = -1;
+        
+        try { activeNode._menuActive = false; }
+        catch(e) { }
+        activeNode = null;
+        
+        scrollUpNode.style.display = "none";
+        scrollDownNode.style.display = "none";
+        scrollPaddingNode1.style.display = "none";
+        scrollPaddingNode2.style.display = "none";
     }
     
-    scrollDownNode.style.posTop = visibleHeight + element.scrollTop -
-      scrollDownNode.offsetHeight + parseFloat(element.currentStyle.paddingBottom);
-    scrollUpNode.style.posTop = element.scrollTop;
-  }
-  
-  function StopScrolling()
-  {
-    if(scrollTimer != null)
+    // *REAL* SLOOOW...
+    function UpdateLayout()
     {
-      window.clearInterval(scrollTimer);
-      scrollTimer = null;
+        var w = 0;
+        var c = 0;
+        w -= GetN(parseFloat(element.currentStyle.paddingLeft), 0);
+        w += element.clientWidth;
+        w -= GetN(parseFloat(element.currentStyle.paddingRight), 0);
+        for(var i = 0; i < element.childNodes.length; i++)
+        {
+            if(element.childNodes[i].nodeType == 1)
+            {
+                c = w;
+                c -= GetN(parseFloat(element.childNodes[i].currentStyle.marginLeft), 0);
+                c -= GetN(parseFloat(element.childNodes[i].currentStyle.marginRight), 0);
+                c -= GetN(parseFloat(element.childNodes[i].currentStyle.borderLeftWidth), 0);
+                c -= GetN(parseFloat(element.childNodes[i].currentStyle.borderRightWidth), 0);
+                c -= GetN(parseFloat(element.childNodes[i].currentStyle.paddingLeft), 0);
+                c -= GetN(parseFloat(element.childNodes[i].currentStyle.paddingRight), 0);
+                element.childNodes[i].style.pixelWidth = c;
+                try { element.childNodes[i].UpdateLayout(); }
+                catch(e) {}
+            }
+        }
     }
-  }
-  
-  </script>
+    
+    // Returns def if value is a valid number, i.e. not NaN
+    function GetN(value, def)
+    {
+        return (isNaN(value) ? def : value);
+    }
+    
+    // Runtime Object Model
+    
+    function get_menuitems()
+    {
+        return menuitems;
+    }
+    
+    function MenuItemCollection()
+    {
+        this.add = MenuItems_Add;
+        this.clear = MenuItems_Clear;
+        this.contains = MenuItems_Contains;
+        this.getLength = MenuItems_GetCount;
+        this.insert = MenuItems_Insert;
+        this.item = MenuItems_Item;
+        this.remove = MenuItems_Remove;
+    }
+    
+    function MenuItems_Add(item)
+    {
+        if(item.nodeType != 1 ||
+            (item.nodeName.toLowerCase() != "menuseperator" &&
+             item.nodeName.toLowerCase() != "menuitem"))
+        {
+            throw ERR_INVALID_ARGUMENT;
+            return false;
+        }
+        
+        element.insertBefore(item, scrollUpNode);
+        
+        return true;
+    }
+    
+    function MenuItems_Clear()
+    {
+        for(var i = element.childNodes.length; i > 0; i--)
+        {
+            if(element.childNodes[i - 1].nodeType == 1 &&
+                (element.childNodes[i - 1].nodeName.toLowerCase() == "menuseperator")
+                 || (element.childNodes[i - 1].nodeName.toLowerCase() == "menuitem"))
+            {
+                element.childNodes[i - 1].removeNode(true);
+            }
+        }
+        return true;
+    }
+    
+    function MenuItems_Contains(item)
+    {
+        var index = 0;
+        for(var i = 0; i < element.childNodes.length; i++)
+        {
+            if(element.childNodes[i].nodeType == 1 &&
+                (element.childNodes[i].nodeName.toLowerCase() == "menuseperator")
+                 || (element.childNodes[i].nodeName.toLowerCase() == "menuitem"))
+            {
+                if(item == element.childNodes[i])
+                {
+                    return index;
+                }
+                index++;
+            }
+        }
+        
+        return -1;
+    }
+    
+    function MenuItems_GetCount()
+    {
+        var count = 0;
+        for(var i = element.childNodes.length; i > 0; i--)
+        {
+            if(element.childNodes[i - 1].nodeType == 1 &&
+                (element.childNodes[i - 1].nodeName.toLowerCase() == "menuseperator")
+                 || (element.childNodes[i - 1].nodeName.toLowerCase() == "menuitem"))
+            {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+    
+    function MenuItems_Insert(item, index)
+    {
+        if(item.nodeType != 1 || isNaN(index) ||
+            (item.nodeName.toLowerCase() != "menuseperator" &&
+             item.nodeName.toLowerCase() != "menuitem"))
+        {
+            throw ERR_INVALID_ARGUMENT;
+            return false;
+        }
+        
+        var count = 0;
+        for(var i = element.childNodes.length; i > 0; i--)
+        {
+            if(element.childNodes[i - 1].nodeType == 1 &&
+                (element.childNodes[i - 1].nodeName.toLowerCase() == "menuseperator")
+                 || (element.childNodes[i - 1].nodeName.toLowerCase() == "menuitem"))
+            {
+                if(count == index)
+                {
+                    return element.insertBefore(item, element.childNodes[i - 1]);
+                }
+                count++;
+            }
+        }
+        
+        return null;
+    }
+    
+    function MenuItems_Item(index)
+    {
+        if(isNaN(index))
+        {
+            throw ERR_INVALID_ARGUMENT;
+            return false;
+        }
+        
+        var count = 0;
+        for(var i = 0; i < element.childNodes.length; i++)
+        {
+            if(element.childNodes[i].nodeType == 1 &&
+                (element.childNodes[i].nodeName.toLowerCase() == "menuseperator")
+                 || (element.childNodes[i].nodeName.toLowerCase() == "menuitem"))
+            {
+                if(count == index)
+                {
+                    return element.childNodes[i];
+                }
+                count++;
+            }
+        }
+        
+        return null;
+    }
+    
+    function MenuItems_Remove(item)
+    {
+        var index = 0;
+        for(var i = element.childNodes.length; i > 0; i--)
+        {
+            if(element.childNodes[i - 1].nodeType == 1 &&
+                (element.childNodes[i - 1].nodeName.toLowerCase() == "menuseperator")
+                 || (element.childNodes[i - 1].nodeName.toLowerCase() == "menuitem"))
+            {
+                if(item == element.childNodes[i - 1])
+                {
+                    return element.childNodes[i - 1].removeNode(true);
+                }
+                index++;
+            }
+        }
+        
+        return null;
+    }
+    
+    
+    
+    // Event Handlers
+    
+    function OnContentReady()
+    {
+        skinner.ApplyClass("Base");
+        
+        var table = document.createElement("table");
+        var tbody = document.createElement("tbody");
+        var trow = document.createElement("tr");
+        var cell = document.createElement("td");
+        
+        cell.vAlign = "middle";
+        cell.style.textAlign = "center";
+        
+        table.style.display = "none";
+        table.style.position = "absolute";
+        table.style.posLeft = 0;
+        table.style.posTop = 0;
+        table.className = "cwMenuScroller";
+        table.cellPadding = 0;
+        table.cellSpacing = 0;
+        
+        trow.appendChild(cell);
+        tbody.appendChild(trow);
+        table.appendChild(tbody);
+                
+        scrollUpNode = table;
+        scrollDownNode = table.cloneNode(true);
+        
+        var padTable = table.cloneNode(true);
+        padTable.rows[0].cells[0].appendChild(
+            document.createTextNode("blah") );
+        padTable.style.position = "static";
+        padTable.style.visibility = "hidden";
+        
+        scrollUpNode.rows[0].cells[0].appendChild(
+            document.createTextNode(GLYPH_SCROLL_UP) );
+        scrollDownNode.rows[0].cells[0].appendChild(
+            document.createTextNode(GLYPH_SCROLL_DOWN) );
+        
+        scrollPaddingNode1 = element.insertBefore(padTable, element.childNodes[0]);    
+        element.appendChild(scrollUpNode);
+        element.appendChild(scrollDownNode);
+        scrollPaddingNode2 = element.appendChild(padTable.cloneNode(true));
+        
+        scrollUpNode.attachEvent("onmouseover", OnScrollUp);
+        scrollDownNode.attachEvent("onmouseover", OnScrollDown);
+        scrollUpNode.attachEvent("onmouseout", StopScrolling);
+        scrollDownNode.attachEvent("onmouseout", StopScrolling);
+        scrollUpNode.attachEvent("onclick", CancelEvent);
+        scrollDownNode.attachEvent("onclick", CancelEvent);
+    }
+
+    function OnPropertyChange()
+    {
+
+    }
+
+    function OnDocReady()
+    {
+        style.visibility = "hidden";
+        skinner.ApplyClass("Default");
+        
+        menuitems = new MenuItemCollection();
+    }
+    
+    // Menu scroll handlers
+    
+    function OnScrollUp()
+    {
+        scrollDirection = -1;
+        scrollTimer = window.setInterval(element.uniqueID + ".ScrollMenu()",
+            1000 / SCROLL_SPEED);
+    }
+    
+    function OnScrollDown()
+    {
+        scrollDirection = 1;
+        scrollTimer = window.setInterval(element.uniqueID + ".ScrollMenu()",
+            1000 / SCROLL_SPEED);
+    }
+    
+    function ScrollMenu()
+    {
+        var scrollPosition = element.scrollTop + scrollDirection;
+        var visibleHeight = 0;
+        visibleHeight -= parseFloat(element.currentStyle.paddingTop);
+        visibleHeight += element.clientHeight;
+        visibleHeight -= parseFloat(element.currentStyle.paddingBottom);
+        
+        if((element.scrollHeight - visibleHeight) < scrollPosition)
+        {
+            StopScrolling();
+            return;
+        }
+        
+        element.scrollTop = scrollPosition;
+        
+        if(element.scrollTop != scrollPosition)
+        {
+            StopScrolling();
+            return;
+        }
+        
+        scrollDownNode.style.posTop = visibleHeight + element.scrollTop -
+            scrollDownNode.offsetHeight + parseFloat(element.currentStyle.paddingBottom);
+        scrollUpNode.style.posTop = element.scrollTop;
+    }
+    
+    function StopScrolling()
+    {
+        if(scrollTimer != null)
+        {
+            window.clearInterval(scrollTimer);
+            scrollTimer = null;
+        }
+    }
+    
+    </script>
 </public:component>

@@ -27,89 +27,89 @@
 
 -->
 <public:component tagname="MenuSeperator">
-  <public:defaults tabStop="false" contentEditable="false"
-   canHaveHTML="true" viewInheritStyle="true"
-   viewMasterTab="false" viewLinkContent="false" />
-  <public:property name="orientation" get="get_orientation" put="put_orientation" />
-  <public:attach event="oncontentready" onevent="OnContentReady()" />
-  <public:attach event="ondocumentready" onevent="OnDocReady()" />
-  <public:attach event="onclick" onevent="OnClick()" />
-  <public:attach event="onselectstart" onevent="CancelEvent()" />
-  <public:method name="UpdateLayout">
-  <script language="JScript" src="CommandWidgets.js"></script>
-  <script language="JScript">
-  
-  var lineNode = null;
-  var tableNode = null;
+    <public:defaults tabStop="false" contentEditable="false"
+     canHaveHTML="true" viewInheritStyle="true"
+     viewMasterTab="false" viewLinkContent="false" />
+    <public:property name="orientation" get="get_orientation" put="put_orientation" />
+    <public:attach event="oncontentready" onevent="OnContentReady()" />
+    <public:attach event="ondocumentready" onevent="OnDocReady()" />
+    <public:attach event="onclick" onevent="OnClick()" />
+    <public:attach event="onselectstart" onevent="CancelEvent()" />
+    <public:method name="UpdateLayout">
+    <script language="JScript" src="CommandWidgets.js"></script>
+    <script language="JScript">
+    
+    var lineNode = null;
+    var tableNode = null;
 
-  // Public Methods
-  
-  function UpdateLayout()
-  {
-    //lineNode.style.width = clientWidth -
-    //  parseFloat(lineNode.currentStyle.marginLeft) -
-    //  parseFloat(lineNode.currentStyle.marginRight);
-    lineNode.style.width = "auto";
-    tableNode.style.width = element.style.width;
-    //lineNode.style.pixelWidth = element.style.pixelWidth - 19 -
-    //  parseFloat(lineNode.currentStyle.marginLeft) -
-    //  parseFloat(lineNode.currentStyle.marginRight);
-    lineNode.style.pixelWidth = lineNode.parentNode.clientWidth
-      - parseFloat(lineNode.parentNode.currentStyle.paddingLeft)
-      - parseFloat(lineNode.parentNode.currentStyle.paddingRight)
-      - parseFloat(lineNode.currentStyle.marginLeft)
-      - parseFloat(lineNode.currentStyle.marginRight);
-  }
+    // Public Methods
+    
+    function UpdateLayout()
+    {
+        //lineNode.style.width = clientWidth -
+        //  parseFloat(lineNode.currentStyle.marginLeft) -
+        //  parseFloat(lineNode.currentStyle.marginRight);
+        lineNode.style.width = "auto";
+        tableNode.style.width = element.style.width;
+        //lineNode.style.pixelWidth = element.style.pixelWidth - 19 -
+        //  parseFloat(lineNode.currentStyle.marginLeft) -
+        //  parseFloat(lineNode.currentStyle.marginRight);
+        lineNode.style.pixelWidth = lineNode.parentNode.clientWidth
+            - parseFloat(lineNode.parentNode.currentStyle.paddingLeft)
+            - parseFloat(lineNode.parentNode.currentStyle.paddingRight)
+            - parseFloat(lineNode.currentStyle.marginLeft)
+            - parseFloat(lineNode.currentStyle.marginRight);
+    }
 
-  // Event Handlers
+    // Event Handlers
 
-  function OnContentReady()
-  {
-    lineNode = element.document.createElement("span");
-    lineNode.className = "cwMenuSeperator";
-    lineNode.innerHTML = "&nbsp;";
-    
-    var table = element.document.createElement("table");
-    var tbody = element.document.createElement("tbody");
-    var row = element.document.createElement("tr");
-    
-    table.cellSpacing = 0;
-    table.cellPadding = 0;
-    table.className = "cwMenuItemBase cwMenuItemDefault cwMenuSeperatorTable";
-    
-    var iconBox = element.document.createElement("td");
-    iconBox.width = 19;
-    iconBox.innerHTML = "&nbsp;";
-    iconBox.className = "cwMenuItemIconBase cwMenuItemIconDefault";
-    
-    var captionBox = element.document.createElement("td");
-    captionBox.className = "cwMenuItemCaptionBox";
-    captionBox.noWrap = true;
-    captionBox.appendChild(lineNode);
-    
-    row.appendChild(iconBox);
-    row.appendChild(captionBox);
-    tbody.appendChild(row);
-    table.appendChild(tbody);
-    element.appendChild(table);
-    
-    tableNode = table;
-  }
+    function OnContentReady()
+    {
+        lineNode = element.document.createElement("span");
+        lineNode.className = "cwMenuSeperator";
+        lineNode.innerHTML = "&nbsp;";
+        
+        var table = element.document.createElement("table");
+        var tbody = element.document.createElement("tbody");
+        var row = element.document.createElement("tr");
+        
+        table.cellSpacing = 0;
+        table.cellPadding = 0;
+        table.className = "cwMenuItemBase cwMenuItemDefault cwMenuSeperatorTable";
+        
+        var iconBox = element.document.createElement("td");
+        iconBox.width = 19;
+        iconBox.innerHTML = "&nbsp;";
+        iconBox.className = "cwMenuItemIconBase cwMenuItemIconDefault";
+        
+        var captionBox = element.document.createElement("td");
+        captionBox.className = "cwMenuItemCaptionBox";
+        captionBox.noWrap = true;
+        captionBox.appendChild(lineNode);
+        
+        row.appendChild(iconBox);
+        row.appendChild(captionBox);
+        tbody.appendChild(row);
+        table.appendChild(tbody);
+        element.appendChild(table);
+        
+        tableNode = table;
+    }
 
-  function OnPropertyChange()
-  {
-    
-  }
+    function OnPropertyChange()
+    {
+        
+    }
 
-  function OnDocReady()
-  {
+    function OnDocReady()
+    {
+        
+    }
     
-  }
-  
-  function OnClick()
-  {
-    event.cancelBubble = true;
-  }
+    function OnClick()
+    {
+        event.cancelBubble = true;
+    }
 
-  </script>
+    </script>
 </public:component>
