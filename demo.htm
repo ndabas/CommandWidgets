@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html xmlns:cw="urn:schemas-nd:cw">
+<!--
+
+ Command Widgets Library
+
+ Copyright (c) 2001 - 2002 Nikhil Dabas
+
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or
+ sell copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+
+--><head>
+<META name=VI60_defaultClientScript content=JavaScript>
+<title>Command Widgets Demo</title>
+
+<?import namespace="cw" implementation="CWContainer.htc" ?>
+<?import namespace="cw" implementation="CWBar.htc" ?>
+<?import namespace="cw" implementation="CWButton.htc" ?>
+<?import namespace="cw" implementation="CWBarSep.htc" ?>
+<?import namespace="cw" implementation="CWBarGripper.htc" ?>
+<?import namespace="cw" implementation="CWMenu.htc" ?>
+<?import namespace="cw" implementation="CWMenuItem.htc" ?>
+<?import namespace="cw" implementation="CWMenuSep.htc" ?>
+
+<link rel=stylesheet href="skins/office2k.css" type=text/css id=cwPrimarySkin>
+<link rel=stylesheet href="" type=text/css id=cwSecondarySkin>
+<script id="clientEventHandlersJS" language="JScript">
+
+var beginLoad = new Date();
+
+function skins_onchange()
+{
+  var skinURL = skins.value.split("|");
+  if(skinURL.length == 0)
+  {
+    cwPrimarySkin.href = skinURL[0];
+    cwSecondarySkin.href = "";
+  }
+  else
+  {
+    cwPrimarySkin.href = skinURL[0];
+    cwSecondarySkin.href = skinURL[1];
+  }
+  
+  // Sort-of async... otherwise causes a small delay
+  // between clicking a list item and selecting the item.
+  window.setTimeout("cwContainer.UpdateLayout();", 10);
+}
+
+function cw_UIReady()
+{
+  cwContainer.style.visibility = "visible";
+}
+
+function PerfTest()
+{
+  var times = 100;
+  var startTime = new Date();
+  while(times--)
+  {
+    cwContainer.UpdateLayout();
+    window.status = times;
+  }
+  var endTime = new Date();
+  var str = "";
+  str += "\nPerformance test: 100 runs of UpdateLayout completed in ";
+  str += ((endTime.getTime() - startTime.getTime())/1000).toString();
+  str += " seconds.";
+  messages.innerText += str;
+}
+
+function window_onload()
+{
+  skins_onchange();
+  var doneLoad = new Date();
+  var str = "";
+  str += "\nPerformance test: document completed in ";
+  str += ((doneLoad.getTime() - beginLoad.getTime())/1000).toString();
+  str += " seconds.";
+  messages.innerText += str;
+}
+
+</script>
+</head>
+<body scroll="no" style="font: menu;" LANGUAGE=javascript onload="return window_onload()">
+
+<p>
+Change skin: 
+<SELECT id=skins LANGUAGE=javascript onchange="return skins_onchange()" style="font: menu;">
+<OPTION value="skins/office2k.css|" selected>Office 2000 - System color scheme</OPTION>
+<OPTION value="skins/officexp.css|skins/xpclassic.css">Office XP - Classic</OPTION>
+<OPTION value="skins/officexp.css|skins/xpstandard.css">Office XP - Standard</OPTION>
+<OPTION value="skins/officexp.css|skins/xpred.css">Office XP - Red</OPTION>
+<OPTION value="skins/officexp.css|skins/xpblue.css">Office XP - Windows XP Blue</OPTION>
+<OPTION value="skins/officexp.css|skins/xpolivegreen.css">Office XP - Windows XP Olive Green</OPTION>
+<OPTION value="skins/officexp.css|skins/xpsilver.css">Office XP - Windows XP Silver</OPTION>
+</SELECT>
+
+</p>
+
+
+<cw:container id="cwContainer" onuiready="return cw_UIReady();"
+ style="visibility: hidden; height: 200px; border: 1px solid black;">
+
+<cw:bar id="barMenu" style="position:absolute;">
+<cw:bargripper/>
+<cw:button menu="menuFile">File</cw:button>
+<cw:button menu="menuEdit">Edit</cw:button>
+<cw:button menu="menuView">View</cw:button>
+<cw:button menu="menuProject">Project</cw:button>
+</cw:bar>
+
+<cw:bar id="bar1" style="position:absolute;" dock="bottom">
+<cw:bargripper/>
+<cw:button oncommand="barMenu.buttons.add(barMenu.buttons.remove(barMenu.buttons.item(0)));" image="images/AddNewItem.gif">Button 1</cw:button>
+<cw:button oncommand="status='Starting Performance Test...';setTimeout('PerfTest();',1000);" id="button2" image="images/copy.gif">Button 2</cw:button>
+<cw:barseperator />
+<cw:button id="button3" menu="menu1" enabled="false" image="images/AddExistingItem.gif">Disabled</cw:button>
+<cw:button menu="menu2" image="images/Print.gif">Menu Button</cw:button>
+</cw:bar>
+
+<cw:menu id="menu1">
+<cw:menuitem id="menuitem1">Hello World</cw:menuitem>
+<cw:menuitem>Hello World More</cw:menuitem>
+<cw:menuitem>Hello World Even More</cw:menuitem>
+<cw:menuseperator id="sep1"/>
+<cw:menuitem>Hello World</cw:menuitem>
+</cw:menu>
+<cw:menu id="submenu1">
+<cw:menuitem id="menuitem1">Hello World</cw:menuitem>
+<cw:menuitem>Hello World More</cw:menuitem>
+<cw:menuitem>Hello World Even More</cw:menuitem>
+<cw:menuseperator id="sep1"/>
+<cw:menuitem>Hello World</cw:menuitem>
+</cw:menu>
+<cw:menu id="menu2">
+<cw:menuitem menu="menu1">Hello World A</cw:menuitem>
+<cw:menuitem image="images\cut.gif">Hello World AA</cw:menuitem>
+<cw:menuitem>Hello World AAA</cw:menuitem>
+<cw:menuitem>Hello World</cw:menuitem>
+</cw:menu>
+
+<cw:menu id="menuFile">
+<cw:menuitem checked="true">New</cw:menuitem>
+<cw:menuitem checked="true" radio="true">Open</cw:menuitem>
+<cw:menuitem>Close</cw:menuitem>
+<cw:menuseperator />
+<cw:menuitem image="images/AddNewItem.gif" checked="true">Add New Item...</cw:menuitem>
+<cw:menuitem image="images/AddExistingItem.gif" enabled="false">Add Existing Item...</cw:menuitem>
+<cw:menuitem>Add Project</cw:menuitem>
+<cw:menuseperator />
+<cw:menuitem image="images/OpenSolution.gif">Open Solution...</cw:menuitem>
+<cw:menuitem image="images/CloseSolution.gif">Close Solution</cw:menuitem>
+<cw:menuseperator />
+<cw:menuitem image="images/SaveSelectedItems.gif">Save Selected Items</cw:menuitem>
+<cw:menuitem>Save Output As...</cw:menuitem>
+<cw:menuitem image="images/SaveAll.gif">Save All</cw:menuitem>
+<cw:menuseperator />
+<cw:menuitem>Source Control</cw:menuitem>
+<cw:menuseperator />
+<cw:menuitem image="images/PageSetup.gif">Page Setup...</cw:menuitem>
+<cw:menuitem image="images/Print.gif">Print...</cw:menuitem>
+<cw:menuseperator />
+<cw:menuitem oncommand="menuEdit.menuitems.add(menuEdit.menuitems.remove(menuEdit.menuitems.item(0)));">Exit</cw:menuitem>
+</cw:menu>
+
+<cw:menu id="menuEdit">
+<cw:menuitem image="images/Undo.gif">Undo</cw:menuitem>
+<cw:menuitem image="images/Redo.gif">Redo</cw:menuitem>
+<cw:menuseperator />
+<cw:menuitem image="images/Cut.gif">Cut</cw:menuitem>
+<cw:menuitem image="images/Copy.gif">Copy</cw:menuitem>
+<cw:menuitem image="images/Paste.gif">Paste</cw:menuitem>
+<cw:menuitem menu="menuView">Cycle Clipboard Ring</cw:menuitem>
+<cw:menuitem image="images/Delete.gif">Delete</cw:menuitem>
+</cw:menu>
+
+<cw:menu id="menuView">
+<cw:menuitem image="images/Code.gif">Code</cw:menuitem>
+<cw:menuitem image="images/Designer.gif">Designer</cw:menuitem>
+<cw:menuitem image="images/Open.gif">Open</cw:menuitem>
+<cw:menuitem>Open With...</cw:menuitem>
+<cw:menuseperator />
+<cw:menuitem image="images/SolutionExplorer.gif">Solution Explorer</cw:menuitem>
+<cw:menuitem image="images/ClassView.gif">Class View</cw:menuitem>
+<cw:menuitem image="images/ServerExplorer.gif">Server Explorer</cw:menuitem>
+<cw:menuitem image="images/ResourceView.gif">Resource View</cw:menuitem>
+<cw:menuitem image="images/PropertiesWindow.gif">Properties Window</cw:menuitem>
+<cw:menuitem image="images/Toolbox.gif">Toolbox</cw:menuitem>
+<cw:menuitem image="images/PendingCheckins.gif">Pending Checkins</cw:menuitem>
+<cw:menuitem>Web Browser</cw:menuitem>
+<cw:menuitem>Other Windows</cw:menuitem>
+<cw:menuitem image="images/FullScreen.gif">Full Screen</cw:menuitem>
+</cw:menu>
+
+<cw:menu id="menuProject">
+<cw:menuitem image="images/AddWindowsForm.gif">Add Windows Form...</cw:menuitem>
+<cw:menuitem image="images/AddInheritedForm.gif">Add Inherited Form...</cw:menuitem>
+<cw:menuitem image="images/AddUserControl.gif">Add User Control...</cw:menuitem>
+<cw:menuitem image="images/AddInheritedControl.gif">Add Inherited Control...</cw:menuitem>
+<cw:menuitem image="images/AddComponent.gif">Add Component...</cw:menuitem>
+<cw:menuitem image="images/AddClass.gif">Add Class...</cw:menuitem>
+<cw:menuseperator />
+<cw:menuitem image="images/AddNewItem.gif">Add New Item...</cw:menuitem>
+<cw:menuitem image="images/AddExistingItem.gif">Add Existing Item...</cw:menuitem>
+<cw:menuseperator />
+<cw:menuitem>Exclude From Project</cw:menuitem>
+<cw:menuitem image="images/ShowAllFiles.gif">Show All Files</cw:menuitem>
+<cw:menuseperator />
+<cw:menuitem>Add Reference...</cw:menuitem>
+<cw:menuitem>Add Web Reference</cw:menuitem>
+<cw:menuitem>Set as StartUp Project</cw:menuitem>
+<cw:menuitem>Project Dependencies...</cw:menuitem>
+<cw:menuitem>Project Build Order...</cw:menuitem>
+</cw:menu>
+
+</cw:container>
+<p style="margin-top: 100px;" id="messages"> </p>
+</BODY>
+</HTML>

@@ -1,0 +1,400 @@
+<!--
+
+ Command Widgets Library
+
+ Copyright (c) 2001 - 2002 Nikhil Dabas
+
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or
+ sell copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+
+-->
+<public:component tagName="Bar">
+  <public:defaults tabStop="false" contentEditable="false"
+   canHaveHTML="true" viewInheritStyle="true"
+   viewMasterTab="false" viewLinkContent="false" />
+  <public:property name="move" get="get_move" put="put_move" />
+  <public:property name="dock" get="get_dock" put="put_dock" />
+  <public:property name="orientation" get="get_orientation" put="put_orientation" />
+  <public:property name="chevron" get="get_chevron" put="put_chevron" />
+  <public:property name="buttons" get="get_buttons" />
+  <public:method name="UpdateLayout">
+  <public:attach event="oncontentready" onevent="OnContentReady()" />
+  <public:attach event="ondocumentready" onevent="OnDocReady()" />
+  <public:attach event="onmousedown" onevent="OnMouseDown()" />
+  <public:attach event="onmouseup" onevent="OnMouseUp()" />
+  <public:attach event="onselectstart" onevent="CancelEvent()" />
+  <script language="JScript" src="CommandWidgets.js"></script>
+  <script language="JScript">
+  
+  var skinner = new SkinMan(element, "cwBar");
+  
+  // Public Properties
+
+  var chevron = false;
+  var move = "dock"; // drag, dock, or none
+  var dock = "top";
+  
+  var buttons = null;
+  
+  function get_move()
+  {
+  	return move;
+  }
+
+  function put_move(newValue)
+  {
+  	newValue = newValue.toLowerCase();
+  	switch(newValue)
+  	{
+  	  case "drag":
+  	  case "none":
+  	  case "dock":
+  	    move = newValue;
+  	    break;
+  	  default:
+  	    throw ERR_INVALID_VALUE;
+  	}
+  }
+  
+  function get_dock()
+  {
+    return dock;
+  }
+  
+  function put_dock(newValue)
+  {
+    newValue = newValue.toLowerCase();
+    switch(newValue)
+    {
+      case "top":
+      case "left":
+      case "bottom":
+      case "right":
+        dock = newValue;
+        break;
+      default:
+        throw ERR_INVALID_VALUE;
+    }
+  }
+  
+  function get_chevron()
+  {
+  	return chevron;
+  }
+
+  function put_chevron(newValue)
+  {
+  	chevron = GetBoolValue(newValue);
+  }
+  
+  function UpdateLayout()
+  {
+    /*var h = 0;
+    var c = 0;
+    h -= GetN(parseFloat(element.currentStyle.paddingTop), 0);
+    h += element.clientHeight;
+    h -= GetN(parseFloat(element.currentStyle.paddingBottom), 0);
+    for(var i = 0; i < element.childNodes.length; i++)
+    {
+      if(element.childNodes[i].nodeType == 1)
+      {
+        c = h;
+        c -= GetN(parseFloat(element.childNodes[i].currentStyle.marginTop), 0);
+        c -= GetN(parseFloat(element.childNodes[i].currentStyle.marginBottom), 0);
+        c -= GetN(parseFloat(element.childNodes[i].currentStyle.borderTopWidth), 0);
+        c -= GetN(parseFloat(element.childNodes[i].currentStyle.borderBottomWidth), 0);
+        c -= GetN(parseFloat(element.childNodes[i].currentStyle.paddingTop), 0);
+        c -= GetN(parseFloat(element.childNodes[i].currentStyle.paddingBottom), 0);
+        element.childNodes[i].style.pixelHeight = c;
+        try { element.childNodes[i].UpdateLayout(); }
+        catch(e) {}
+      }
+    }*/
+  }
+  
+  function GetN(value, def)
+  {
+    return (isNaN(value) ? def : value);
+  }
+  
+  
+  // Runtime Object Model
+  
+  function get_buttons()
+  {
+    return buttons;
+  }
+  
+  function ToolbarButtonCollection()
+  {
+    this.add = Buttons_Add;
+    this.clear = Buttons_Clear;
+    this.contains = Buttons_Contains;
+    this.getLength = Buttons_GetLength;
+    this.insert = Buttons_Insert;
+    this.item = Buttons_Item;
+    this.remove = Buttons_Remove;
+  }
+  
+  function Buttons_Add(item)
+  {
+    if(item.nodeType != 1 ||
+      (item.nodeName.toLowerCase() != "barseperator" &&
+       item.nodeName.toLowerCase() != "button"))
+    {
+      throw ERR_INVALID_ARGUMENT;
+      return false;
+    }
+    
+    element.appendChild(item);
+    
+    return true;
+  }
+  
+  function Buttons_Clear()
+  {
+    for(var i = element.childNodes.length; i > 0; i--)
+    {
+      if(element.childNodes[i - 1].nodeType == 1 &&
+        (element.childNodes[i - 1].nodeName.toLowerCase() == "barseperator")
+         || (element.childNodes[i - 1].nodeName.toLowerCase() == "button"))
+      {
+        element.childNodes[i - 1].removeNode(true);
+      }
+    }
+    return true;
+  }
+  
+  function Buttons_Contains(item)
+  {
+    var index = 0;
+    for(var i = 0; i < element.childNodes.length; i++)
+    {
+      if(element.childNodes[i].nodeType == 1 &&
+        (element.childNodes[i].nodeName.toLowerCase() == "barseperator")
+         || (element.childNodes[i].nodeName.toLowerCase() == "button"))
+      {
+        if(item == element.childNodes[i])
+        {
+          return index;
+        }
+        index++;
+      }
+    }
+    
+    return -1;
+  }
+  
+  function Buttons_GetLength()
+  {
+    var count = 0;
+    for(var i = element.childNodes.length; i > 0; i--)
+    {
+      if(element.childNodes[i - 1].nodeType == 1 &&
+        (element.childNodes[i - 1].nodeName.toLowerCase() == "barseperator")
+         || (element.childNodes[i - 1].nodeName.toLowerCase() == "button"))
+      {
+        count++;
+      }
+    }
+    
+    return count;
+  }
+  
+  function Buttons_Insert(item, index)
+  {
+    if(item.nodeType != 1 || isNaN(index) ||
+      (item.nodeName.toLowerCase() != "barseperator" &&
+       item.nodeName.toLowerCase() != "button"))
+    {
+      throw ERR_INVALID_ARGUMENT;
+      return false;
+    }
+    
+    var count = 0;
+    for(var i = element.childNodes.length; i > 0; i--)
+    {
+      if(element.childNodes[i - 1].nodeType == 1 &&
+        (element.childNodes[i - 1].nodeName.toLowerCase() == "barseperator")
+         || (element.childNodes[i - 1].nodeName.toLowerCase() == "button"))
+      {
+        if(count == index)
+        {
+          return element.insertBefore(item, element.childNodes[i - 1]);
+        }
+        count++;
+      }
+    }
+    
+    return null;
+  }
+  
+  function Buttons_Item(index)
+  {
+    if(isNaN(index))
+    {
+      throw ERR_INVALID_ARGUMENT;
+      return false;
+    }
+    
+    var count = 0;
+    for(var i = 0; i < element.childNodes.length; i++)
+    {
+      if(element.childNodes[i].nodeType == 1 &&
+        (element.childNodes[i].nodeName.toLowerCase() == "barseperator")
+         || (element.childNodes[i].nodeName.toLowerCase() == "button"))
+      {
+        if(count == index)
+        {
+          return element.childNodes[i];
+        }
+        count++;
+      }
+    }
+    
+    return null;
+  }
+  
+  function Buttons_Remove(item)
+  {
+    var index = 0;
+    for(var i = element.childNodes.length; i > 0; i--)
+    {
+      if(element.childNodes[i - 1].nodeType == 1 &&
+        (element.childNodes[i - 1].nodeName.toLowerCase() == "barseperator")
+         || (element.childNodes[i - 1].nodeName.toLowerCase() == "button"))
+      {
+        if(item == element.childNodes[i - 1])
+        {
+          return element.childNodes[i - 1].removeNode(true);
+        }
+        index++;
+      }
+    }
+    
+    return null;
+  }
+  
+
+  // Event Handlers
+
+  function OnContentReady()
+  {
+    skinner.ApplyClass("Base");
+  }
+
+  function OnPropertyChange()
+  {
+
+  }
+
+  function OnDocReady()
+  {
+    skinner.ApplyClass("Default");
+    
+    window._CWMan.dock.Dock(element);
+    
+    buttons = new ToolbarButtonCollection();
+  }
+  
+  function OnMouseDown()
+  {
+    if(event.srcElement.nodeName.toLowerCase() == "bargripper" &&
+       move != "none")
+      StartDrag();
+  }
+  
+  function OnMouseUp()
+  {
+    StopDrag();
+  }
+  
+  function OnMouseMove()
+  {
+    Drag();
+  }
+  
+  // Drag and Dock
+  
+  var dragOffsetX = 0;
+  var dragOffsetY = 0;
+  var zIndex = 0;
+  
+  function StartDrag()
+  {
+    element.setCapture();
+    window._CWMan.popups.SetMaxLevel(-1); // Hide any menus
+    zIndex = element.style.zIndex;
+    element.style.zIndex = 1000;
+    
+    var x = 0, y = 0;
+    var node = element;
+    while(node != null)
+    {
+      x += node.offsetLeft;
+      y += node.offsetTop;
+      node = node.offsetParent;
+    }
+    
+    dragOffsetX = event.x - x;
+    dragOffsetY = event.y - y;
+    
+    element.attachEvent("onmousemove", OnMouseMove);
+    
+    window._CWMan.dock.Free(element);
+  }
+  function StopDrag()
+  {
+    element.style.zIndex = zIndex;
+    element.releaseCapture();
+    element.detachEvent("onmousemove", OnMouseMove);
+  }
+  
+  function Drag()
+  {
+    var newX = 0, newY = 0;
+    newX = event.x - dragOffsetX;
+    newY = event.y - dragOffsetY;
+    
+    var maxX = 0, maxY = 0, minX = 0, minY = 0;
+    var node = window._CWMan.container;
+    while(node != null)
+    {
+      minX += node.offsetLeft;
+      minY += node.offsetTop;
+      node = node.offsetParent;
+    }
+    maxY = minY + window._CWMan.container.offsetHeight
+           - element.offsetHeight;
+    maxX = minX + window._CWMan.container.offsetWidth
+           - element.offsetWidth;
+    
+    if(newX < minX) newX = minX;
+    if(newY < minY) newY = minY;
+    if(newX > maxX) newX = maxX;
+    if(newY > maxY) newY = maxY;
+    
+    element.style.pixelTop = newY;
+    element.style.pixelLeft = newX;
+  }
+  
+  </script>
+</public:component>

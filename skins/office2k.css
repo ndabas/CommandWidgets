@@ -1,0 +1,300 @@
+.cwContainerBase { display: block; }
+.cwContainerDefault { }
+
+.cwBarBase
+{
+ overflow: hidden;
+ cursor: default;
+ padding: 1px;
+ background-color: buttonface;
+ border-top: solid 1px buttonhighlight;
+ border-left: solid 1px buttonhighlight;
+ border-right: solid 1px buttonshadow;
+ border-bottom: solid 1px buttonshadow;
+ display: inline-block;
+ vertical-align: middle;
+}
+.cwBarDefault { }
+
+.cwButtonBase
+{
+ color: buttontext;
+ padding-top: 4px;
+ padding-left: 3px;
+ padding-bottom: 2px;
+ padding-right: 3px;
+ margin-top: 1px;
+ margin-bottom: 1px;
+ overflow: hidden;
+ border-style: solid;
+ border-width: 1px;
+ border-color: buttonface;
+ display: inline-block;
+ white-space: nowrap;
+}
+.cwButtonDefault
+{
+ border-color: buttonface;
+}
+.cwButtonHover
+{
+ border-top-color: buttonhighlight;
+ border-left-color: buttonhighlight;
+ border-bottom-color: buttonshadow;
+ border-right-color: buttonshadow;
+}
+.cwButtonDown
+{
+ border-top-color: buttonshadow;
+ border-left-color: buttonshadow;
+ border-bottom-color: buttonhighlight;
+ border-right-color: buttonhighlight;
+}
+.cwButtonDisabled
+{
+ border-color: buttonface;
+ color: graytext;
+}
+.cwButtonDisabled img
+{
+ filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=0,Mirror=0,Invert=0,XRay=0,Grayscale=1,Opacity=1.00);
+}
+.cwMenuButtonBase
+{
+ color: buttontext;
+ padding-top: 4px;
+ padding-left: 3px;
+ padding-bottom: 2px;
+ padding-right: 3px;
+ margin-top: 1px;
+ margin-bottom: 1px;
+ overflow: hidden;
+ border-style: solid;
+ border-width: 1px;
+ border-color: buttonface;
+ display: inline-block;
+ white-space: nowrap;
+}
+.cwMenuButtonDefault
+{
+ border-color: buttonface;
+}
+.cwMenuButtonHover
+{
+ border-top-color: buttonhighlight;
+ border-left-color: buttonhighlight;
+ border-bottom-color: buttonshadow;
+ border-right-color: buttonshadow;
+}
+.cwMenuButtonDown, .cwMenuButtonMenuActive
+{
+ border-top-color: buttonshadow;
+ border-left-color: buttonshadow;
+ border-bottom-color: buttonhighlight;
+ border-right-color: buttonhighlight;
+}
+.cwMenuButtonDisabled
+{
+ filter: progid:DXImageTransform.Microsoft.Alpha(Style=0,Opacity=40);
+ border-color: buttonface;
+ color: graytext;
+}
+.cwMenuButtonDisabled img
+{
+ filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=0,Mirror=0,Invert=0,XRay=0,Grayscale=1,Opacity=1.00);
+}
+
+.cwButtonBase img, .cwMenuButtonBase img
+{
+ border: none;
+ margin-right: 2px;
+}
+
+.cwGripperH
+{
+ padding-top: 3px;
+ padding-bottom: 3px;
+ cursor: move;
+ margin-top: 1px;
+ margin-bottom: 1px;
+ margin-left: 2px;
+ margin-right: 2px;
+ border-top: buttonhighlight;
+ border-bottom: buttonshadow;
+ border-right: buttonshadow;
+ border-left: buttonhighlight;
+ border-style: solid;
+ border-width: 1px;
+ width: 1px;
+ display: inline-block;
+ overflow: hidden;
+}
+.cwGripperV
+{
+ cursor: move;
+ margin-top: 2px;
+ margin-bottom: 2px;
+ margin-left: 3px;
+ margin-right: 3px;
+ border-top: buttonhighlight;
+ border-bottom: buttonshadow;
+ border-right: buttonshadow;
+ border-left: buttonhighlight;
+ border-style: solid;
+ border-width: 1px;
+ height: 3px;
+ display: inline-block;
+ overflow: hidden;
+}
+.cwBarSeperatorH
+{
+ padding-top: 3px;
+ padding-bottom: 3px;
+ border-left-width: 1px;
+ border-left-style: solid;
+ border-left-color: buttonshadow;
+ border-right-width: 1px;
+ border-right-style: solid;
+ border-right-color: buttonhighlight;
+ margin-left: 2px;
+ margin-right: 2px;
+ margin-top: 1px;
+ margin-bottom: 1px;
+ width: 0px;
+ display: inline-block;
+ overflow: hidden;
+}
+.cwBarSeperatorV
+{
+ border-top-width: 1px;
+ border-top-style: solid;
+ border-top-color: buttonshadow;
+ border-bottom-width: 1px;
+ border-bottom-style: solid;
+ border-bottom-color: buttonhighlight;
+ margin-top: 2px;
+ margin-bottom: 2px;
+ margin-left: 2px;
+ margin-right: 2px;
+ height: 2px;
+ display: inline-block;
+ overflow: hidden;
+}
+
+.cwMenuSeperator
+{
+ border-top-width: 1px;
+ border-top-style: solid;
+ border-top-color: buttonshadow;
+ border-bottom-width: 1px;
+ border-bottom-style: solid;
+ border-bottom-color: buttonhighlight;
+ margin-top: 2px;
+ margin-bottom: 2px;
+ margin-left: -5px;
+ margin-right: 14px;
+ height: 0px;
+ overflow: hidden;
+ display: inline-block;
+}
+.cwMenuSeperatorTable
+{
+ font-size: 1px;
+ height: 8px;
+}
+
+.cwMenuBase
+{
+ overflow: hidden;
+ cursor: default;
+ padding: 1px;
+ background-color: menu;
+ color: menutext;
+ border-top: outset 2px buttonhighlight;
+ border-left: outset 2px buttonhighlight;
+ border-right: outset 2px buttonshadow;
+ border-bottom: outset 2px buttonshadow;
+ display: inline-block;
+ position: absolute;
+}
+.cwMenuDefault
+{
+ 
+}
+
+.cwMenuItemBase
+{
+ display: block;
+}
+.cwMenuItemBase td
+{
+ 
+}
+.cwMenuItemBase .cwMenuItemCaptionBox
+{
+ padding-left: 2px;
+}
+.cwMenuItemBase .cwMenuItemIconBase
+{
+ width: 18px;
+ text-align: right;
+}
+.cwMenuItemBase .cwMenuItemIconBase img
+{
+ width: 16px;
+ height: 17px;
+ border: solid 1px menu;
+ overflow: hidden;
+}
+.cwMenuItemBase .cwMenuItemGlyphBox
+{
+ padding-right: 2px;
+ overflow: hidden;
+ font-family: webdings;
+ font-size: 9pt;
+}
+.cwMenuItemDefault
+{
+ background-color: inherit;
+ color: inherit;
+}
+.cwMenuItemHover
+{
+ background-color: highlight;
+}
+.cwMenuItemHover td
+{
+ color: highlighttext;
+}
+.cwMenuItemHover .cwMenuItemIconBase img
+{
+ background-color: menu;
+ border-top: outset 1px ;
+ border-left: outset 1px buttonhighlight;
+ border-right: outset 1px buttonshadow;
+ border-bottom: outset 1px buttonshadow;
+}
+.cwMenuItemBase .cwMenuItemIconChecked img
+{
+ border-top: inset 1px buttonshadow;
+ border-left: inset 1px buttonshadow;
+ border-right: inset 1px buttonhighlight;
+ border-bottom: inset 1px buttonhighlight;
+}
+.cwMenuItemDisabled
+{
+ filter: progid:DXImageTransform.Microsoft.Alpha(Style=0,Opacity=40);
+ border-color: buttonface;
+ color: graytext;
+}
+.cwMenuItemDisabled img
+{
+ filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=0,Mirror=0,Invert=0,XRay=0,Grayscale=1,Opacity=1.00);
+}
+
+.cwMenuScroller
+{
+ font-family: webdings;
+ font-size: 9pt;
+ background-color: menu;
+}

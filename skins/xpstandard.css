@@ -1,0 +1,118 @@
+.cwBarBase
+{
+ background-color: #dbd8d1;
+ border-color: #dbd8d1;
+}
+
+.cwButtonBase, .cwMenuButtonBase
+{
+ border-color: #dbd8d1;
+ color: #000000;
+}
+.cwButtonDefault, .cwMenuButtonDefault
+{
+ border-color: #dbd8d1;
+ background-color: #dbd8d1;
+}
+.cwButtonHover, .cwMenuButtonHover
+{
+ border-color: #0a246a;
+ background-color: #b6bdd2;
+}
+.cwButtonDown, .cwMenuButtonDown
+{
+ border-color: #0a246a;
+ background-color: #b6bdd2;
+}
+.cwMenuButtonMenuActive
+{
+  background-color: #dbd8d1;
+  border-top-color: #999999;
+  border-left-color: #999999;
+  border-right-color: #999999;
+  border-bottom-color: #f9f8f7;
+}
+.cwButtonDisabled, .cwMenuButtonDisabled
+{
+ border-color: #dbd8d1;
+}
+
+.cwGripperH, .cwGripperV, .cwBarSeperatorH, .cwBarSeperatorV,
+.cwMenuSeperator
+{
+ background-color: #999999;
+}
+
+.cwMenuBase
+{
+ background-color: #f9f8f7;
+ border-color: #999999;
+ color: #000000;
+}
+.cwMenuItemBase
+{
+ 
+}
+.cwMenuItemBase .cwMenuItemCaptionBox
+{
+ border-color: #f9f8f7;
+}
+.cwMenuItemBase .cwMenuItemIconBase img
+{
+ border-style: solid;
+ border-width: 1px;
+}
+.cwMenuItemBase .cwMenuItemIconDefault img
+{
+ border-color: #dbd8d1;
+}
+.cwMenuItemBase .cwMenuItemIconBase
+{
+ border-color: #dbd8d1;
+ background-color: #dbd8d1;
+}
+.cwMenuItemBase .cwMenuItemIconChecked img
+{
+ border-color: #0a246a;
+ background-color: #b6bdd2;
+}
+.cwMenuItemBase .cwMenuItemGlyphBox
+{
+ border-color: #f9f8f7;
+}
+.cwMenuItemHover, .cwMenuItemHover td
+{
+ color: inherit;
+ background-color: #b6bdd2;
+}
+.cwMenuItemHover .cwMenuItemCaptionBox
+{
+ border-color: #0a246a;
+}
+.cwMenuItemHover .cwMenuItemIconBase
+{
+ border-color: #0a246a;
+ background-color: #b6bdd2;
+}
+.cwMenuItemHover .cwMenuItemIconBase img
+{
+ border-style: solid;
+ border-width: 1px;
+}
+.cwMenuItemHover .cwMenuItemIconDefault img
+{
+ border-color: #b6bdd2;
+}
+.cwMenuItemHover .cwMenuItemIconChecked img
+{
+ border-color: #0a246a;
+ background-color: #b6bdd2;
+}
+.cwMenuItemHover .cwMenuItemGlyphBox
+{
+ border-color: #0a246a;
+}
+.cwMenuScroller
+{
+ background-color: #f9f8f7;
+}

@@ -1,0 +1,206 @@
+.cwContainerBase { display: block; }
+.cwContainerDefault { }
+
+.cwBarBase
+{
+ overflow: hidden;
+ cursor: default;
+ padding: 1px;
+ margin-right: 2px;
+ border-style: solid;
+ border-width: 1px;
+ display: inline-block;
+ vertical-align: middle;
+}
+.cwBarDefault { }
+
+.cwButtonBase, .cwMenuButtonBase
+{
+ padding-top: 2px;
+ padding-left: 3px;
+ padding-bottom: 2px;
+ padding-right: 3px;
+ margin-top: 1px;
+ margin-bottom: auto;
+ overflow: hidden;
+ border-style: solid;
+ border-width: 1px;
+ display: inline-block;
+ white-space: nowrap;
+}
+.cwButtonBase img, .cwMenuButtonBase img
+{
+ margin-right: 2px;
+ border: none;
+ padding: 0px;
+}
+.cwMenuButtonMenuActive
+{ }
+.cwButtonDefault, .cwMenuButtonDefault
+{ }
+.cwButtonHover, .cwMenuButtonHover
+{ }
+.cwButtonDown, .cwMenuButtonDown
+{ }
+
+/*
+
+Not really the effect we want, but adding a shadow has one cool
+side-effect - the menu scrolls *very* smoothly...
+
+*/
+.cwMenuBase
+{
+ filter: progid:DXImageTransform.Microsoft.Shadow(direction=135,color=#999999,strength=3);
+}
+.cwButtonDisabled, .cwMenuButtonDisabled
+{
+ filter: progid:DXImageTransform.Microsoft.Alpha(Style=0,Opacity=40);
+}
+.cwButtonDisabled img, .cwMenuButtonDisabled img
+{
+ filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=0,Mirror=0,Invert=0,XRay=0,Grayscale=1,Opacity=1.00);
+}
+
+.cwGripperH
+{
+ padding-top: 3px;
+ padding-bottom: 3px;
+ cursor: move;
+ margin-top: 1px;
+ margin-bottom: 1px;
+ margin-left: 2px;
+ margin-right: 2px;
+ width: 3px;
+ overflow: hidden;
+ display: inline-block;
+ background-image: url(xpgrippy.gif);
+}
+.cwGripperV
+{
+ cursor: move;
+ margin-top: 2px;
+ margin-bottom: 2px;
+ margin-left: 3px;
+ margin-right: 3px;
+ height: 3px;
+ display: inline-block;
+ overflow: hidden;
+}
+.cwBarSeperatorH
+{
+ padding-top: 3px;
+ padding-bottom: 3px;
+ margin-left: 2px;
+ margin-right: 2px;
+ margin-top: 1px;
+ margin-bottom: 1px;
+ width: 1px;
+ display: inline-block;
+ overflow: hidden;
+}
+.cwBarSeperatorV
+{
+ margin-top: 2px;
+ margin-bottom: 2px;
+ margin-left: 2px;
+ margin-right: 2px;
+ height: 1px;
+ display: inline-block;
+ overflow: hidden;
+}
+
+.cwMenuSeperator
+{
+ margin-top: 0px;
+ margin-bottom: 0px;
+ margin-left: 13px;
+ margin-right: 0px;
+ height: 1px;
+ overflow: hidden;
+ display: inline-block;
+}
+.cwMenuSeperatorTable
+{
+ font-size: 1px;
+ height: 8px;
+}
+
+.cwMenuBase
+{
+ overflow: hidden;
+ cursor: default;
+ padding: 1px;
+ border-width: 1px;
+ border-style: solid;
+ display: inline-block;
+ position: absolute;
+}
+.cwMenuDefault
+{
+ 
+}
+
+.cwMenuItemBase
+{
+ display: block;
+}
+.cwMenuItemBase td
+{
+ border-style: solid;
+ border-width: 1px;
+}
+.cwMenuItemBase .cwMenuItemCaptionBox
+{
+ border-left: none;
+ border-right: none;
+}
+.cwMenuItemBase .cwMenuItemIconBase
+{
+ width: 18px;
+ border-right: none;
+ text-align: center;
+}
+.cwMenuItemBase .cwMenuItemIconBase img
+{
+ width: 16px;
+ height: 17px;
+ /*overflow: hidden;*/
+ /*filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=0,Mirror=0,Invert=0,XRay=0,Grayscale=0,Opacity=0.6);*/
+}
+.cwMenuItemHover .cwMenuItemIconBase img
+{
+ /*filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=0,Mirror=0,Invert=0,XRay=0,Grayscale=0,Opacity=1.00);*/
+}
+.cwMenuItemBase .cwMenuItemGlyphBox
+{
+ padding-right: 2px;
+ overflow: hidden;
+ font-family: webdings;
+ font-size: 9pt;
+ border-left: none;
+}
+.cwMenuItemDefault
+{
+ background-color: inherit;
+ color: inherit;
+}
+.cwMenuItemHover
+{ }
+.cwMenuItemHover td
+{ }
+.cwMenuItemBase .cwMenuItemIconBase img
+{ }
+.cwMenuItemBase .cwMenuItemIconChecked img
+{ }
+.cwMenuItemDisabled .cwMenuItemCaptionBox,
+.cwMenuItemDisabled .cwMenuItemGlyphBox
+{
+ filter: progid:DXImageTransform.Microsoft.Alpha(Style=0,Opacity=40);
+}
+
+.cwMenuScroller
+{
+ font-family: webdings;
+ font-size: 9pt;
+}

@@ -1,0 +1,338 @@
+<!--
+
+ Command Widgets Library
+
+ Copyright (c) 2001 - 2002 Nikhil Dabas
+
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or
+ sell copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+
+-->
+<public:component tagName="MenuItem">
+  <public:defaults tabStop="false" contentEditable="false"
+   canHaveHTML="true" viewInheritStyle="true"
+   viewMasterTab="false" viewLinkContent="false" />
+  <public:property name="menu" get="get_menu" put="put_menu" />
+  <public:property name="radio" get="get_radio" put="put_radio" />
+  <public:property name="checked" get="get_checked" put="put_checked" />
+  <public:property name="enabled" get="get_enabled" put="put_enabled" />
+  <public:property name="image" get="get_image" put="put_image" />
+  <public:property name="prompt" get="get_prompt" put="put_prompt" />
+  <public:property name="_menuActive" get="get__menuActive" put="put__menuActive" />
+  <public:event name="oncommand" id="evtCommand" />
+  <public:attach event="oncontentready" onevent="OnContentReady()" />
+  <public:attach event="ondocumentready" onevent="OnDocReady()" />
+  <public:attach event="onmouseover" onevent="OnMouseOver()" />
+  <public:attach event="onmouseout" onevent="OnMouseOut()" />
+  <public:attach event="onclick" onevent="OnClick()" />
+  <public:attach event="onselectstart" onevent="CancelEvent()" />
+  <public:method name="UpdateLayout">
+  <script language="JScript" src="CommandWidgets.js"></script>
+  <script language="JScript">
+  
+  var GLYPH_RADIO = "=";
+  var GLYPH_CHECK = "a";
+  var GLYPH_MENU = "4";
+  
+  var skinner = new SkinMan(element, "cwMenuItem");
+  var iconNode = null;
+  var checkNode = null;
+  var iconSkin = null;
+  var tableNode = null;
+  var glyphNode = null;
+  
+  var IsDocReady = false;
+    
+  // Public Properties
+  
+  var menu = null;
+  var radio = false;    // Show radio checks
+  var checked = false;
+  var enabled = true;
+  var image = null;
+  var prompt;
+  var _menuActive = false;
+
+  function get_checked()
+  {
+  	return checked;
+  }
+
+  function put_checked(newValue)
+  {
+  	checked = GetBoolValue(newValue);
+  	//currentClass = checked ? "Checked" : "Default";
+  	//skinner.ApplyClass(currentClass);
+  	if(iconSkin != null)
+  	  iconSkin.ApplyClass(checked ? "Checked" : "Default");
+  	if(checkNode != null)
+  	  checkNode.style.visibility = checked ? "visible" : "hidden";
+  }
+
+  function get_enabled()
+  {
+  	return enabled;
+  }
+
+  function put_enabled(newValue)
+  {
+  	enabled = GetBoolValue(newValue);
+  	skinner.ApplyClass(enabled ? "Default" : "Disabled");
+  }
+
+  function get_image()
+  {
+  	return image;
+  }
+
+  function put_image(newValue)
+  {
+  	if(newValue == "")
+  	  newValue = null;
+  	
+  	image = newValue;
+  	if(image != null && iconNode != null)
+  	{
+  	  iconNode.src = image;
+  	  iconNode.style.display = "";
+  	  checkNode.style.display = "none";
+  	}
+  	if(image == null && iconNode != null)
+  	{
+  	  iconNode.style.display = "none";
+  	  checkNode.style.display = "";
+  	}
+  }
+
+  function get_prompt()
+  {
+  	return prompt;
+  }
+
+  function put_prompt(newValue)
+  {
+  	prompt = newValue;
+  }
+  
+  function get_menu()
+  {
+  	return menu;
+  }
+
+  function put_menu(newValue)
+  {
+    if(window.document.getElementById(newValue) != null)
+    {
+      menu = newValue;
+    }
+    else
+    {
+      if(newValue == "" || newValue == null)
+      {
+        menu = null;
+      }
+      else
+      {
+        if(IsDocReady)
+        {
+          menu = null;
+          throw ERR_INVALID_VALUE;
+        }
+        else
+        {
+          menu = newValue;
+        }
+      }
+    }
+    
+    if(glyphNode)
+      glyphNode.style.visibility = (menu == null ? "hidden" : "inherit");
+  }
+  
+  function get_radio()
+  {
+  	return type;
+  }
+
+  function put_radio(newValue)
+  {
+  	radio = GetBoolValue(newValue);
+  	if(checkNode != null)
+  	  checkNode.nodeValue = radio ? GLYPH_RADIO : GLYPH_CHECK;
+  }
+  
+  function get__menuActive()
+  {
+    return _menuActive;
+  }
+  
+  function put__menuActive(newValue)
+  {
+    _menuActive = GetBoolValue(newValue);
+    skinner.ApplyClass(_menuActive ? "Hover" : "Default");
+  }
+  
+  function UpdateLayout()
+  {
+    tableNode.style.width = element.style.width;
+  }
+  
+  // Event Handlers
+
+  function OnContentReady()
+  {
+    skinner.ApplyClass("Base");
+    
+    var captionNode = element.childNodes[0].cloneNode();
+    
+    var table = element.document.createElement("table");
+    var tbody = element.document.createElement("tbody");
+    var row = element.document.createElement("tr");
+    
+    table.style.fontSize = currentStyle.fontSize;
+    table.style.fontFamily = currentStyle.fontFamily;
+    table.style.fontWeight = currentStyle.fontWeight;
+    table.style.color = currentStyle.color;
+    table.cellSpacing = 0;
+    table.cellPadding = 0;
+    
+    var iconCell = element.document.createElement("td");
+    iconCell.width = 17;
+    iconSkin = new SkinMan(iconCell, "cwMenuItemIcon");
+    iconSkin.ApplyClass("Base");
+    iconSkin.ApplyClass("Default");
+    
+    var iconImg = document.createElement("img");
+    iconImg.style.display = "none";
+    iconImg.width = 16;
+    iconCell.appendChild(iconImg);
+    var checkGlyph = document.createElement("span");
+    checkGlyph.appendChild(document.createTextNode(radio ?
+      GLYPH_RADIO : GLYPH_CHECK));
+    iconCell.style.fontFamily = "webdings";
+    iconCell.appendChild(checkGlyph);
+    
+    iconNode = iconImg;
+    checkNode = checkGlyph;
+    if(image != null)
+  	{
+  	  iconNode.src = image;
+  	  iconNode.style.display = "";
+  	  checkNode.style.display = "none";
+  	}
+  	checkNode.style.visibility = checked ? "visible" : "hidden";
+    
+    var captionCell = element.document.createElement("td");
+    captionCell.className = "cwMenuItemCaptionBox";
+    captionCell.appendChild(captionNode);
+    captionCell.noWrap = true;
+    
+    var paddingCell = element.document.createElement("td");
+    paddingCell.width = 3;
+    paddingCell.className = "cwMenuItemCaptionBox";
+    paddingCell.innerHTML = "&nbsp;";
+    
+    var glyphCell = element.document.createElement("td");
+    glyphCell.className = "cwMenuItemGlyphBox";
+    var glyphBox = element.document.createElement("span");
+    var glyph = document.createTextNode(GLYPH_MENU);
+    glyphCell.appendChild(glyphBox);
+    glyphBox.appendChild(glyph);
+    glyphBox.style.visibility = (menu == null ? "hidden" : "inherit");
+    
+    element.childNodes[0].nodeValue = "";
+    row.appendChild(iconCell);
+    row.appendChild(paddingCell);
+    row.appendChild(captionCell);
+    row.appendChild(glyphCell);
+    tbody.appendChild(row);
+    table.appendChild(tbody);
+    element.appendChild(table);
+    
+    tableNode = table;
+    glyphNode = glyphBox;
+  }
+
+  function OnPropertyChange()
+  {
+
+  }
+
+  function OnDocReady()
+  {
+    IsDocReady = true;
+    put_menu(menu);
+    
+    skinner.ApplyClass(enabled ? "Default" : "Disabled");
+    iconSkin.ApplyClass(checked ? "Checked" : "Default");
+  }
+  
+  function OnMouseOver()
+  {
+    if(!enabled)
+      return;
+    
+    skinner.ApplyClass("Hover");
+    ShowMenu();
+  }
+  
+  function OnMouseOut()
+  {
+    if(!enabled || _menuActive)
+      return;
+    
+    skinner.ApplyClass(enabled ? "Default" : "Disabled");
+  }
+  
+  function OnClick()
+  {
+    if(!enabled || (menu != null))
+    {
+      event.cancelBubble = true;
+    }
+    else
+    {
+      evtCommand.fire();
+    }
+  }
+  
+  function ShowMenu()
+  {
+    window._CWMan.popups.SetMaxLevel(parentNode.level);
+    
+    if(menu == null)
+      return;
+    
+    var x = 0, y = 0;
+    var node = element;
+    while(node != null)
+    {
+      x += node.offsetLeft;
+      y += node.offsetTop;
+      node = node.offsetParent;
+    }
+    x += element.offsetWidth;
+    
+    window.document.getElementById(menu).ShowMenu(x, y,
+            parentNode.level + 1, element);
+  }
+  </script>
+</public:component>
